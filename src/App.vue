@@ -1,19 +1,18 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <timer :time="180" />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Timer from './components/Timer.vue'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    HelloWorld
+    Timer
   }
-};
+}
 </script>
 
 <style>

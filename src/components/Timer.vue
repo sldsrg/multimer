@@ -27,10 +27,9 @@ export default {
   },
   methods: {
     start() {
-      this.remaining -= 1
       this.timer = setInterval(() => {
         this.remaining -= 1
-        if (this.remaining === 0) {
+        if (this.remaining <= 0) {
           clearInterval(this.timer)
           this.playSound()
         }

@@ -1,7 +1,9 @@
 <template>
   <div>
+    <span>{{name}}</span>
     <progress :value="remaining" :max="total"/>
     <span>{{formattedTime}}</span>
+    <span>{{soundName}}</span>
     <button @click="start">Start</button>
     <button @click="stop">Stop</button>
     <button @click="reset">Reset</button>
@@ -9,21 +11,20 @@
 </template>
 
 <script>
+import sounds from '../assets/sounds'
+
 export default {
   data() {
     return {
-      sounds: [
-        'media/whistle-flute-2.mp3',
-        'media/bulb-horn-02.mp3',
-        'media/magic-chime-01-m.mp3'
-      ],
       remaining: this.time,
       total: this.time,
       timer: undefined
     }
   },
   props: {
-    time: Number
+    name: String,
+    time: Number,
+    sound: String
   },
   methods: {
     start() {
@@ -42,8 +43,8 @@ export default {
       this.remaining = this.total
     },
     playSound() {
-      const mySound = new Audio(this.sounds[2])
-      mySound.play()
+      const sound = new Audio(`/media/${this.sound}.mp3`)
+      sound.play()
     }
   },
   computed: {
@@ -52,7 +53,8 @@ export default {
       const minutes = Math.floor(this.remaining / 60)
       const seconds = this.remaining - minutes * 60
       return `${minutes}:${pad(seconds)}`
-    }
+    },
+    soundName() { return sounds[this.sound] }
   }
 }
 </script>

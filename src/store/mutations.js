@@ -3,7 +3,7 @@ export default {
   fromLocalStorage(state, value) {
     const store = localStorage.getItem('store')
     if (store) {
-      state.timers = JSON.parse(store).timers
+      Object.assign(state, JSON.parse(store))
     }
   },
 
@@ -11,7 +11,9 @@ export default {
     state.timers.push(value)
   },
 
-  setTime(state, {id, time}) {
-    state.timers[id].time = time
+  setTimer(state, {id, timer}) {
+    timer.name && (state.timers[id].name = timer.name.trim())
+    timer.time && (state.timers[id].time = Number(timer.time))
+    timer.sound && (state.timers[id].sound = timer.sound)
   }
 }

@@ -1,7 +1,8 @@
 <template>
   <div id="home">
     <div v-for="(t, i) in timers" :key="i">
-      <timer :time="t.time" /><router-link :to="`timers/${i}`">edit</router-link>
+      <timer :name="t.name" :time="t.time" :sound="t.sound"/>
+      <router-link :to="`timers/${i}`">edit</router-link>
     </div>
     <button @click="add">Add</button>
   </div>

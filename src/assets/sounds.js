@@ -3,5 +3,8 @@ export default {
   'beep-2': 'beep 2',
   'magic-chime': 'chime',
   'whistle-flute': 'whistle',
-  'bulb-horn': 'bulb horn'
+  'steam-locomotive-whistle': 'steam loco whistle',
+  'bulb-horn': 'bulb horn',
+  'whoosh': 'whoosh',
+  'telephone-ring': 'telephone ring'
 }

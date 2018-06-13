@@ -28,3 +28,27 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+button {
+  width: 3rem;
+  height: 3rem;
+  background: lightblue;
+  border: none;
+  border-radius: 50% 50%;
+  margin: 3px;
+  outline: none;
+}
+
+button:hover {
+  background: #000;
+  color: #fff;
+  -webkit-transition-duration: .5s;
+  transition-duration: .5s;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+</style>

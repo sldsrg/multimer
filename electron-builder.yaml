@@ -1,0 +1,12 @@
+directories:
+  output: dist
+  buildResources: assets
+files:
+  - build/**/*
+  - index.js
+appId: com.example.timer
+linux:
+  target:
+    - AppImage
+    - deb
+electronVersion: 2.0.2

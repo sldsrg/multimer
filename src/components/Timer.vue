@@ -43,7 +43,7 @@ export default {
       this.remaining = this.total
     },
     playSound() {
-      const sound = new Audio(`/media/${this.sound}.mp3`)
+      const sound = new Audio(`./media/${this.sound}.mp3`)
       sound.play()
     }
   },

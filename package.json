@@ -1,12 +1,22 @@
 {
   "name": "timer",
   "version": "0.1.0",
+  "author": {
+    "email": "soloss@yandex.ru",
+    "name": "Sergey Solodukhin"
+  },
+  "homepage": "http://127.0.0.1",
   "private": true,
+  "main": "index.js",
   "scripts": {
+    "prestart": "yarn build",
+    "start": "electron .",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "preelectron-pack": "yarn build",
+    "electron-pack": "build"
   },
   "dependencies": {
     "vue": "^2.5.16",
@@ -14,14 +24,16 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-beta.15",
-    "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
-    "@vue/cli-plugin-unit-jest": "^3.0.0-beta.15",
-    "@vue/cli-service": "^3.0.0-beta.15",
-    "@vue/eslint-config-standard": "^3.0.0-beta.16",
-    "@vue/test-utils": "^1.0.0-beta.16",
+    "@vue/cli-plugin-babel": "^3.0.0-rc.2",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.2",
+    "@vue/cli-plugin-unit-jest": "^3.0.0-rc.2",
+    "@vue/cli-service": "^3.0.0-rc.2",
+    "@vue/eslint-config-standard": "^3.0.0-rc.2",
+    "@vue/test-utils": "^1.0.0-beta.19",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
+    "electron": "2.0.2",
+    "electron-builder": "^20.15.1",
     "vue-template-compiler": "^2.5.16"
   },
   "browserslist": [

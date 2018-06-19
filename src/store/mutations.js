@@ -8,15 +8,15 @@ export default {
   },
 
   addTimer(state, value) {
-    if (!value.name) { value.name = `Timer ${state.timers.length + 1}`}
+    if (!value.id) { value.id = `Timer ${state.timers.length + 1}` }
     state.timers.push(value)
   },
 
-  setTimer(state, {name, timer}) {
-    state.timers = state.timers.map(t => t.name === name ? {...t, ...timer} : t)
+  setTimer(state, {id, timer}) {
+    state.timers = state.timers.map(t => t.id === id ? {...t, id} : t)
   },
 
-  removeTimer(state, name) {
-    state.timers = state.timers.filter(t => t.name !== name)
+  removeTimer(state, id) {
+    state.timers = state.timers.filter(t => t.id !== id)
   }
 }

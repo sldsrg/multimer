@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <div v-for="(t, i) in timers" :key="i">
-      <timer :timer="t"/>
+      <timer v-bind="t"/>
     </div>
     <button @click="add">Add</button>
   </div>

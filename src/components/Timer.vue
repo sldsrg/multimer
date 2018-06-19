@@ -9,13 +9,13 @@
       </span>
     </div>
     <div class="info">
-      <span>{{timer.name}} ({{formatTime(total)}})</span>
+      <span>{{id}} ({{formatTime(time)}})</span>
       <span>{{soundName}}</span>
       <a href="#" @click.prevent="edit">edit</a>
       <a href="#" @click.prevent="remove">remove</a>
     </div>
     <div class="progress">
-      <progress :value="remaining" :max="total"/>
+      <progress :value="remaining" :max="time"/>
     </div>
   </div>
 </template>
@@ -26,14 +26,17 @@ import sounds from '../assets/sounds'
 export default {
   data() {
     return {
-      remaining: Number(this.timer.time),
-      total: Number(this.timer.time),
+      remaining: this.time,
       intervalId: undefined
-
     }
   },
   props: {
-    timer: Object
+    id: {
+      type: String,
+      required: true
+    },
+    time: Number,
+    sound: String
   },
   methods: {
     formatTime(t) {
@@ -55,24 +58,24 @@ export default {
       clearInterval(this.intervalId)
     },
     reset() {
-      this.remaining = this.total
+      this.remaining = this.time
     },
     playSound() {
-      const audio = new Audio(`./media/${this.timer.sound}.mp3`)
+      const audio = new Audio(`./media/${this.sound}.mp3`)
       audio.play()
     },
     edit() {
       this.$router.push({
         name: 'ModifyTimer',
-        params: {name: this.timer.name}
+        params: {id: this.id}
       })
     },
     remove() {
-      this.$store.commit('removeTimer', this.timer.name)
+      this.$store.commit('removeTimer', this.id)
     }
   },
   computed: {
-    soundName() { return sounds[this.timer.sound] }
+    soundName() { return sounds[this.sound] }
   }
 }
 </script>

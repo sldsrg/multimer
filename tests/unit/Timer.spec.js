@@ -1,11 +1,11 @@
 import { shallowMount } from '@vue/test-utils'
-import Timer from '@/components/Timer.vue'
+import Timer from '@/components/Timer'
 
 describe('Timer.vue', () => {
   it('renders props.time when passed', () => {
-    const time = 300
+    const timer = { id: 'test', time: 300 }
     const wrapper = shallowMount(Timer, {
-      propsData: { time }
+      propsData: timer
     })
     expect(wrapper.text()).toContain('5:00')
   })

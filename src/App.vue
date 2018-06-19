@@ -8,8 +8,6 @@
 
 export default {
   name: 'app',
-  components: {
-  },
   created() {
     this.$store.commit('fromLocalStorage')
   }

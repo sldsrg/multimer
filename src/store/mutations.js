@@ -13,7 +13,7 @@ export default {
   },
 
   setTimer(state, {id, timer}) {
-    state.timers = state.timers.map(t => t.id === id ? {...t, id} : t)
+    state.timers = state.timers.map(t => t.id === id ? {...timer, id} : t)
   },
 
   removeTimer(state, id) {

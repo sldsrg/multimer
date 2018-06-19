@@ -1,17 +1,17 @@
 <template>
   <div>
-    Edit timer {{$route.params.id}}
+    Edit timer {{id}}
     <div>
-      Name: <input v-model="timer.id"/>
+      Name: <input v-model="id"/>
     </div>
     <div class="time">
-      Time: <input v-model="hrs" type="number"/> Hrs 
+      Time: <input v-model="hrs" type="number"/> Hrs
       <input v-model="mins" type="number"/> Mins
       <input v-model="secs" type="number"/> Secs
     </div>
     <div>
       Sound:
-      <select v-model="timer.sound">
+      <select v-model="sound">
         <option v-for="(value, key) in sounds" :value="key" :key="key">
           {{value}}
         </option>
@@ -26,29 +26,29 @@
 import sounds from '../assets/sounds'
 
 export default {
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
   data() {
-    const timer = this.$store.state.timers.find(t => t.id === this.$route.params.id)
+    const timer = this.$store.state.timers.find(t => t.id === this.id)
     const hrs = Math.floor(timer.time / 60 / 60)
     const mins = Math.floor((timer.time - hrs * 60) / 60)
     const secs = timer.time - (hrs * 60 + mins) * 60
-    return { sounds, timer, hrs, mins, secs }
+    return { sounds, ...timer, hrs, mins, secs }
   },
   computed: {
-    time: {
-      get() { return this.timer.time },
-      set(value) {
-        this.timer.time = Number(value)
-      }
-    }
   },
   methods: {
     testSound() {
-      const test = new Audio(`./media/${this.timer.sound}.mp3`)
+      const test = new Audio(`./media/${this.sound}.mp3`)
       test.play()
     },
     save() {
-      this.timer.time = Number((this.hrs * 60 + this.mins) * 60 + this.secs)
-      this.$store.commit('setTimer', {id: this.$route.params.id, timer: this.timer})
+      const time = (Number(this.hrs) * 60 + Number(this.mins)) * 60 + Number(this.secs)
+      this.$store.commit('setTimer', {id: this.id, timer: {sound: this.sound, time}})
       this.$router.go(-1)
     }
   }

@@ -9,7 +9,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import Timer from './Timer.vue'
+import Timer from './Timer'
 
 export default {
   name: 'home',

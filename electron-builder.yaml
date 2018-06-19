@@ -9,4 +9,7 @@ linux:
   target:
     - AppImage
     - deb
+win:
+  target:
+    - nsis
 electronVersion: 2.0.2

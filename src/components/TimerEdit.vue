@@ -27,7 +27,9 @@ export default {
   data() {
     return {
       sounds,
-      timer: {...this.$store.state.timers[this.$route.params.id]}
+      timer: {
+        ...this.$store.state.timers.find(t => t.name === this.$route.params.name)
+      }
     }
   },
   computed: {
@@ -38,7 +40,7 @@ export default {
       test.play()
     },
     save() {
-      this.$store.commit('setTimer', {id: this.$route.params.id, timer: this.timer})
+      this.$store.commit('setTimer', {name: this.$route.params.name, timer: this.timer})
       this.$router.go(-1)
     }
   }

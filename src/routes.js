@@ -14,7 +14,7 @@ export default [
     props: false
   },
   {
-    path: '/timers/:id',
+    path: '/timers/:name',
     name: 'ModifyTimer',
     component: TimerEdit,
     props: true

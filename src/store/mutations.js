@@ -8,12 +8,15 @@ export default {
   },
 
   addTimer(state, value) {
+    if (!value.name) { value.name = `Timer ${state.timers.length + 1}`}
     state.timers.push(value)
   },
 
-  setTimer(state, {id, timer}) {
-    timer.name && (state.timers[id].name = timer.name.trim())
-    timer.time && (state.timers[id].time = Number(timer.time))
-    timer.sound && (state.timers[id].sound = timer.sound)
+  setTimer(state, {name, timer}) {
+    state.timers = state.timers.map(t => t.name === name ? {...t, ...timer} : t)
+  },
+
+  removeTimer(state, name) {
+    state.timers = state.timers.filter(t => t.name !== name)
   }
 }

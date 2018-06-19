@@ -1,12 +1,22 @@
 <template>
   <div>
-    <span>{{name}}</span>
-    <progress :value="remaining" :max="total"/>
-    <span>{{formattedTime}}</span>
-    <span>{{soundName}}</span>
-    <button @click="start">Start</button>
-    <button @click="stop">Stop</button>
-    <button @click="reset">Reset</button>
+    <div>
+      <span class="counter">{{formatTime(remaining)}}</span>
+      <span class="controls">
+        <button @click="start">Start</button>
+        <button @click="stop">Stop</button>
+        <button @click="reset">Reset</button>
+      </span>
+    </div>
+    <div class="info">
+      <span>{{timer.name}} ({{formatTime(total)}})</span>
+      <span>{{soundName}}</span>
+      <a href="#" @click.prevent="edit">edit</a>
+      <a href="#" @click.prevent="remove">remove</a>
+    </div>
+    <div class="progress">
+      <progress :value="remaining" :max="total"/>
+    </div>
   </div>
 </template>
 
@@ -16,50 +26,77 @@ import sounds from '../assets/sounds'
 export default {
   data() {
     return {
-      remaining: this.time,
-      total: this.time,
-      timer: undefined
+      remaining: Number(this.timer.time),
+      total: Number(this.timer.time),
+      intervalId: undefined
+
     }
   },
   props: {
-    name: String,
-    time: Number,
-    sound: String
+    timer: Object
   },
   methods: {
+    formatTime(t) {
+      const pad = num => ('0' + num).substr(-2)
+      const minutes = Math.floor(t / 60)
+      const seconds = t - minutes * 60
+      return `${minutes}:${pad(seconds)}`
+    },
     start() {
-      this.timer = setInterval(() => {
+      this.intervalId = setInterval(() => {
         this.remaining -= 1
         if (this.remaining <= 0) {
-          clearInterval(this.timer)
+          clearInterval(this.intervalId)
           this.playSound()
         }
       }, 1000)
     },
     stop() {
-      clearInterval(this.timer)
+      clearInterval(this.intervalId)
     },
     reset() {
       this.remaining = this.total
     },
     playSound() {
-      const sound = new Audio(`./media/${this.sound}.mp3`)
-      sound.play()
+      const audio = new Audio(`./media/${this.timer.sound}.mp3`)
+      audio.play()
+    },
+    edit() {
+      this.$router.push({
+        name: 'ModifyTimer',
+        params: {name: this.timer.name}
+      })
+    },
+    remove() {
+      this.$store.commit('removeTimer', this.timer.name)
     }
   },
   computed: {
-    formattedTime() {
-      const pad = num => ('0' + num).substr(-2)
-      const minutes = Math.floor(this.remaining / 60)
-      const seconds = this.remaining - minutes * 60
-      return `${minutes}:${pad(seconds)}`
-    },
-    soundName() { return sounds[this.sound] }
+    soundName() { return sounds[this.timer.sound] }
   }
 }
 </script>
 
 <style scoped>
+.counter {
+  font-size: 3rem;
+}
+
+.progress {
+  margin-top: 5px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+a, span {
+  margin: 12px;
+}
+
+progress {
+  width: 90%;
+  height: 40px;
+}
+
 button {
   width: 3rem;
   height: 3rem;

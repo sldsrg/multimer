@@ -4,8 +4,10 @@
     <div>
       Name: <input v-model="timer.id"/>
     </div>
-    <div>
-      Time: <input v-model="timer.time" type="number"/>s.
+    <div class="time">
+      Time: <input v-model="hrs" type="number"/> Hrs 
+      <input v-model="mins" type="number"/> Mins
+      <input v-model="secs" type="number"/> Secs
     </div>
     <div>
       Sound:
@@ -25,12 +27,19 @@ import sounds from '../assets/sounds'
 
 export default {
   data() {
-    return {
-      sounds,
-      timer: this.$store.state.timers.find(t => t.id === this.$route.params.id)
-    }
+    const timer = this.$store.state.timers.find(t => t.id === this.$route.params.id)
+    const hrs = Math.floor(timer.time / 60 / 60)
+    const mins = Math.floor((timer.time - hrs * 60) / 60)
+    const secs = timer.time - (hrs * 60 + mins) * 60
+    return { sounds, timer, hrs, mins, secs }
   },
   computed: {
+    time: {
+      get() { return this.timer.time },
+      set(value) {
+        this.timer.time = Number(value)
+      }
+    }
   },
   methods: {
     testSound() {
@@ -38,6 +47,7 @@ export default {
       test.play()
     },
     save() {
+      this.timer.time = Number((this.hrs * 60 + this.mins) * 60 + this.secs)
       this.$store.commit('setTimer', {id: this.$route.params.id, timer: this.timer})
       this.$router.go(-1)
     }
@@ -48,5 +58,9 @@ export default {
 <style scoped>
 div {
   margin: 8px;
+}
+.time input {
+  width: 2rem;
+  margin-left: 1rem;
 }
 </style>

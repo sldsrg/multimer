@@ -11,6 +11,7 @@
     </div>
     <div class="info">
       <span>{{id}} ({{formatTime(time)}})</span>
+      <font-awesome-icon :icon="icon" />
       <span>{{soundName}}</span>
       <a href="#" @click.prevent="edit">edit</a>
       <a href="#" @click.prevent="remove">remove</a>
@@ -22,6 +23,8 @@
 </template>
 
 <script>
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import faSound from '@fortawesome/fontawesome-free-solid/faVolumeUp'
 import sounds from '../assets/sounds'
 
 export default {
@@ -85,7 +88,13 @@ export default {
       if (this.intervalId) return true
       if (this.remaining === this.time) return true
       return false
+    },
+    icon () {
+      return faSound
     }
+  },
+  components: {
+    FontAwesomeIcon
   }
 }
 </script>

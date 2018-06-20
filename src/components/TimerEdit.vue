@@ -2,7 +2,7 @@
   <div>
     Edit timer {{id}}
     <div>
-      Name: <input v-model="id"/>
+      Name: <input v-model="tempId"/>
     </div>
     <div class="time">
       Time: <input v-model="hrs" type="number"/> Hrs
@@ -37,7 +37,14 @@ export default {
     const hrs = Math.floor(timer.time / 60 / 60)
     const mins = Math.floor((timer.time - hrs * 60) / 60)
     const secs = timer.time - (hrs * 60 + mins) * 60
-    return { sounds, ...timer, hrs, mins, secs }
+    return {
+      tempId: this.id,
+      sounds,
+      sound: timer.sound, 
+      hrs, 
+      mins,
+      secs
+    }
   },
   computed: {
   },
@@ -48,7 +55,10 @@ export default {
     },
     save() {
       const time = (Number(this.hrs) * 60 + Number(this.mins)) * 60 + Number(this.secs)
-      this.$store.commit('setTimer', {id: this.id, timer: {sound: this.sound, time}})
+      this.$store.commit('setTimer', {
+        id: this.id,
+        timer: {id: this.tempId, sound: this.sound, time}
+      })
       this.$router.go(-1)
     }
   }

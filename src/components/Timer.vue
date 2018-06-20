@@ -5,7 +5,9 @@
       <span class="controls">
         <button @click="start">Start</button>
         <button @click="stop">Stop</button>
-        <button @click="reset">Reset</button>
+        <button class="reset" :disabled=resetDisabled @click="reset">
+          Reset
+        </button>
       </span>
     </div>
     <div class="info">
@@ -75,7 +77,12 @@ export default {
     }
   },
   computed: {
-    soundName() { return sounds[this.sound] }
+    soundName() { return sounds[this.sound] },
+    resetDisabled() {
+      if (this.intervalId) return true
+      if (this.remaining === this.time) return true
+      return false
+    }
   }
 }
 </script>
@@ -110,7 +117,7 @@ button {
   outline: none;
 }
 
-button:hover {
+button:enabled:hover {
   background: #000;
   color: #fff;
   -webkit-transition-duration: .5s;

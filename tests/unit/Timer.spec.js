@@ -14,6 +14,19 @@ describe('Timer.vue component', () => {
     expect(wrapper.html()).toContain('<span class="counter">5:00</span>')
   })
 
+  describe('stop/stop button', () => {
+    let button
+    beforeEach(() => {
+      button = wrapper.find('.startStop')
+    })
+
+    it('set intrvalId to undefined when clicked', () => {
+      wrapper.vm.intervalId = 9
+      button.trigger('click')
+      expect(wrapper.vm.intervalId).toBeUndefined()
+    })
+  })
+
   describe('reset button', () => {
     let button
     beforeEach(() => {

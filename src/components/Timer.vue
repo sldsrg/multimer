@@ -3,8 +3,7 @@
     <div>
       <span class="counter">{{formatTime(remaining)}}</span>
       <span class="controls">
-        <button @click="start">Start</button>
-        <button @click="stop">Stop</button>
+        <button class="startStop" @click="startStop">{{intervalId ? 'Stop' : 'Start'}}</button>
         <button class="reset" :disabled=resetDisabled @click="reset">
           Reset
         </button>
@@ -47,17 +46,21 @@ export default {
       const seconds = t - minutes * 60
       return `${minutes}:${pad(seconds)}`
     },
-    start() {
-      this.intervalId = setInterval(() => {
-        this.remaining -= 1
-        if (this.remaining <= 0) {
-          clearInterval(this.intervalId)
-          this.playSound()
-        }
-      }, 1000)
-    },
-    stop() {
-      clearInterval(this.intervalId)
+    startStop() {
+      if (this.intervalId) {
+        // stop timer
+        clearInterval(this.intervalId)
+        this.intervalId = undefined
+      } else {
+        // start timer
+        this.intervalId = setInterval(() => {
+          this.remaining -= 1
+          if (this.remaining <= 0) {
+            clearInterval(this.intervalId)
+            this.playSound()
+          }
+        }, 1000)
+      }
     },
     reset() {
       this.remaining = this.time
@@ -115,6 +118,10 @@ button {
   border-radius: 50% 50%;
   margin: 3px;
   outline: none;
+}
+
+button:disabled {
+  background: lightgray;
 }
 
 button:enabled:hover {

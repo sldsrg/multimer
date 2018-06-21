@@ -29,8 +29,11 @@ import sounds from '../assets/sounds'
 
 export default {
   data() {
+    const timer = this.$store.state.timers.find(t => t.id === this.id)
     return {
-      remaining: this.time,
+      time: timer.time,
+      sound: timer.sound,
+      remaining: timer.time,
       intervalId: undefined
     }
   },
@@ -38,9 +41,7 @@ export default {
     id: {
       type: String,
       required: true
-    },
-    time: Number,
-    sound: String
+    }
   },
   methods: {
     formatTime(t) {

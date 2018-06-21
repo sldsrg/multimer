@@ -1,12 +1,12 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 
-import TimerEdit from '@/components/TimerEdit'
+import Home from '@/components/Home'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('Timer.vue component', () => {
+describe('Home.vue component', () => {
   let store
   let wrapper
 
@@ -19,14 +19,14 @@ describe('Timer.vue component', () => {
         ]
       }
     })
-    wrapper = mount(TimerEdit, {
+    wrapper = mount(Home, {
       store,
-      localVue,
-      propsData: {id: 't1'}
+      localVue
     })
   })
 
-  it('renders timer`s id', () => {
-    expect(wrapper.text()).toContain('Edit timer t1')
+  it('contains "add" button', () => {
+    const button = wrapper.find('.add')
+    expect(button.text()).toBe('Add')
   })
 })

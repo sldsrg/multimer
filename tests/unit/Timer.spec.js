@@ -1,17 +1,37 @@
-import { mount } from '@vue/test-utils'
+import { createLocalVue, mount } from '@vue/test-utils'
+import Vuex from 'vuex'
+
 import Timer from '@/components/Timer'
 
+const localVue = createLocalVue()
+localVue.use(Vuex)
+
 describe('Timer.vue component', () => {
-  let timer
   let wrapper
+  let store
 
   beforeEach(() => {
-    timer = { id: 'test', time: 300, sound: 'chime' }
-    wrapper = mount(Timer, { propsData: timer })
+    store = new Vuex.Store({
+      state: {
+        timers: [
+          {id: 't1', time: 300, sound: 'chime'},
+          {id: 't2', time: 600, sound: 'whoosh'}
+        ]
+      }
+    })
+    wrapper = mount(Timer, {
+      store,
+      localVue,
+      propsData: {id: 't1'}
+    })
   })
 
   it('renders correct time', () => {
     expect(wrapper.html()).toContain('<span class="counter">00:05:00</span>')
+  })
+
+  it('call setInterval when timer become active', () => {
+    expect(wrapper.vm.intervalId).toBeDefined()
   })
 
   describe('start/stop button', () => {
@@ -49,12 +69,12 @@ describe('Timer.vue component', () => {
 
     it('disabled if timer active', () => {
       wrapper.vm.remaining = 10
-      wrapper.vm.intervalId = 'dummy' // timer active
+      wrapper.vm.intervalId = 12345 // timer active
       expect(button.attributes().disabled).toBe('disabled')
     })
 
     it('enabled if timer stopped and remaining time differs from nominal time', () => {
-      wrapper.vm.remaining = timer.time - 10
+      wrapper.vm.remaining = 10
       wrapper.vm.intervalId = undefined // timer idle
       expect(button.attributes().disabled).toBeUndefined()
     })

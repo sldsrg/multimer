@@ -1,14 +1,14 @@
 <template>
   <div id="home">
     <div v-for="(t, i) in timers" :key="i">
-      <timer v-bind="t"/>
+      <timer v-bind:id="t.id"/>
     </div>
-    <button @click="add">Add</button>
+    <button class="add" @click="add">Add</button>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import Timer from './Timer'
 
 export default {
@@ -17,13 +17,13 @@ export default {
     Timer
   },
   computed: {
-    ...mapGetters(['timers'])
+    ...mapState(['timers'])
   },
   methods: {
     ...mapMutations(['addTimer']),
     add() {
       this.addTimer({
-        time: 330
+        time: 300
       })
     }
   }

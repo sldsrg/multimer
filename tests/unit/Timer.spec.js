@@ -11,10 +11,10 @@ describe('Timer.vue component', () => {
   })
 
   it('renders correct time', () => {
-    expect(wrapper.html()).toContain('<span class="counter">5:00</span>')
+    expect(wrapper.html()).toContain('<span class="counter">00:05:00</span>')
   })
 
-  describe('stop/stop button', () => {
+  describe('start/stop button', () => {
     let button
     beforeEach(() => {
       button = wrapper.find('.startStop')

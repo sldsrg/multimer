@@ -45,9 +45,10 @@ export default {
   methods: {
     formatTime(t) {
       const pad = num => ('0' + num).substr(-2)
-      const minutes = Math.floor(t / 60)
-      const seconds = t - minutes * 60
-      return `${minutes}:${pad(seconds)}`
+      const hours = Math.floor(t / 3600)
+      const minutes = Math.floor((t - hours * 3600) / 60)
+      const seconds = t - hours * 3600 - minutes * 60
+      return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
     },
     startStop() {
       if (this.intervalId) {
@@ -56,13 +57,14 @@ export default {
         this.intervalId = undefined
       } else {
         // start timer
-        this.intervalId = setInterval(() => {
-          this.remaining -= 1
-          if (this.remaining <= 0) {
-            clearInterval(this.intervalId)
-            this.playSound()
-          }
-        }, 1000)
+        this.intervalId = setInterval(() => this.tick(), 1000)
+      }
+    },
+    tick() {
+      this.remaining -= 1
+      if (this.remaining <= 0) {
+        clearInterval(this.intervalId)
+        this.playSound()
       }
     },
     reset() {

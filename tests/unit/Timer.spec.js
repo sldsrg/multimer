@@ -20,10 +20,15 @@ describe('Timer.vue component', () => {
       button = wrapper.find('.startStop')
     })
 
-    it('set intrvalId to undefined when clicked', () => {
+    it('set intrvalId to undefined when clicked in active state', () => {
       wrapper.vm.intervalId = 9
       button.trigger('click')
       expect(wrapper.vm.intervalId).toBeUndefined()
+    })
+
+    it('become disabled when timer completed', () => {
+      wrapper.vm.remaining = 0
+      expect(button.attributes().disabled).toBe('disabled')
     })
   })
 

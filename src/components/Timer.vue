@@ -3,7 +3,7 @@
     <div>
       <span class="counter">{{formatTime(remaining)}}</span>
       <span class="controls">
-        <button class="startStop" @click="startStop">{{intervalId ? 'Stop' : 'Start'}}</button>
+        <button class="startStop" :disabled=startDisabled @click="startStop">{{intervalId ? 'Stop' : 'Start'}}</button>
         <button class="reset" :disabled=resetDisabled @click="reset">
           Reset
         </button>
@@ -57,13 +57,14 @@ export default {
         this.intervalId = undefined
       } else {
         // start timer
-        this.intervalId = setInterval(() => this.tick(), 1000)
+        this.intervalId = setInterval(this.tick, 1000)
       }
     },
     tick() {
       this.remaining -= 1
       if (this.remaining <= 0) {
         clearInterval(this.intervalId)
+        this.intervalId = undefined
         this.playSound()
       }
     },
@@ -86,6 +87,9 @@ export default {
   },
   computed: {
     soundName() { return sounds[this.sound] },
+    startDisabled() {
+      return (this.remaining === 0)
+    },
     resetDisabled() {
       if (this.intervalId) return true
       if (this.remaining === this.time) return true

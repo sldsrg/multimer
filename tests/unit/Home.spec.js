@@ -1,6 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 
+import getters from '@/store/getters'
 import Home from '@/components/Home'
 
 const localVue = createLocalVue()
@@ -11,13 +12,15 @@ describe('Home.vue component', () => {
   let wrapper
 
   beforeEach(() => {
+    const state = {
+      timers: [
+        {id: 't1', time: 300, sound: 'chime'},
+        {id: 't2', time: 600, sound: 'whoosh'}
+      ]
+    }
     store = new Vuex.Store({
-      state: {
-        timers: [
-          {id: 't1', time: 300, sound: 'chime'},
-          {id: 't2', time: 600, sound: 'whoosh'}
-        ]
-      }
+      state,
+      getters
     })
     wrapper = mount(Home, {
       store,

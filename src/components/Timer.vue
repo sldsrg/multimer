@@ -29,7 +29,7 @@ import sounds from '../assets/sounds'
 
 export default {
   data() {
-    const timer = this.$store.state.timers.find(t => t.id === this.id)
+    const timer = this.$store.getters.getTimerById(this.id)
     return {
       time: timer.time,
       sound: timer.sound,

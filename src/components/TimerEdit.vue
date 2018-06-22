@@ -5,9 +5,9 @@
       Name: <input v-model="tempId"/>
     </div>
     <div class="time">
-      Time: <input v-model="hrs" type="number"/> Hrs
-      <input v-model="mins" type="number"/> Mins
-      <input v-model="secs" type="number"/> Secs
+      Time: <input v-model.number="hrs" type="number"/> Hrs
+      <input v-model.number="mins" type="number"/> Mins
+      <input v-model.number="secs" type="number"/> Secs
     </div>
     <div>
       Sound:
@@ -33,7 +33,7 @@ export default {
     }
   },
   data() {
-    const timer = this.$store.state.timers.find(t => t.id === this.id)
+    const timer = this.$store.getters.getTimerById(this.id)
     const hrs = Math.floor(timer.time / 60 / 60)
     const mins = Math.floor((timer.time - hrs * 60) / 60)
     const secs = timer.time - (hrs * 60 + mins) * 60
@@ -54,7 +54,7 @@ export default {
       test.play()
     },
     save() {
-      const time = (Number(this.hrs) * 60 + Number(this.mins)) * 60 + Number(this.secs)
+      const time = (this.hrs * 60 + this.mins) * 60 + this.secs
       this.$store.commit('setTimer', {
         id: this.id,
         timer: {id: this.tempId, sound: this.sound, time}

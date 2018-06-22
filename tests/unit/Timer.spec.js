@@ -2,6 +2,7 @@ import { createLocalVue, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 
 import getters from '@/store/getters'
+import mutations from '@/store/mutations'
 import Timer from '@/components/Timer'
 
 const localVue = createLocalVue()
@@ -14,13 +15,14 @@ describe('Timer.vue component', () => {
   beforeEach(() => {
     const state = {
       timers: [
-        {id: 't1', time: 300, sound: 'chime'},
-        {id: 't2', time: 600, sound: 'whoosh'}
+        {id: 't1', time: 300, sound: 'chime', active: false},
+        {id: 't2', time: 600, sound: 'whoosh', active: false}
       ]
     }
     store = new Vuex.Store({
       state,
-      getters
+      getters,
+      mutations
     })
     wrapper = mount(Timer, {
       store,
@@ -33,9 +35,10 @@ describe('Timer.vue component', () => {
     expect(wrapper.html()).toContain('<span class="counter">00:05:00</span>')
   })
 
-  // it('call setInterval when timer become active', () => {
-  //   expect(wrapper.vm.intervalId).toBeDefined()
-  // })
+  it('call setInterval when timer become active', () => {
+    wrapper.vm.$store.commit('activateAll')
+    expect(wrapper.vm.intervalId).toBeDefined()
+  })
 
   describe('start/stop button', () => {
     let button

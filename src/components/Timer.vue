@@ -10,14 +10,15 @@
       </span>
     </div>
     <div class="info">
-      <span>{{id}} ({{formatTime(time)}})</span>
+      <span>{{id}} ({{formatTime(timer.time)}})</span>
       <font-awesome-icon :icon="icon" />
       <span>{{soundName}}</span>
       <a href="#" @click.prevent="edit">edit</a>
       <a href="#" @click.prevent="remove">remove</a>
+      {{status}} <button @click="test">test</button>
     </div>
     <div class="progress">
-      <progress :value="remaining" :max="time"/>
+      <progress :value="remaining" :max="timer.time"/>
     </div>
   </div>
 </template>
@@ -31,9 +32,7 @@ export default {
   data() {
     const timer = this.$store.getters.getTimerById(this.id)
     return {
-      time: timer.time,
-      sound: timer.sound,
-      remaining: timer.time,
+      remaining: timer ? timer.time : 0,
       intervalId: undefined
     }
   },
@@ -61,6 +60,13 @@ export default {
         this.intervalId = setInterval(this.tick, 1000)
       }
     },
+    start() {
+      if (this.intervalId) {
+        throw new Error('Timer already started')
+      } else {
+        this.intervalId = setInterval(this.tick, 1000)
+      }
+    },
     tick() {
       this.remaining -= 1
       if (this.remaining <= 0) {
@@ -70,10 +76,11 @@ export default {
       }
     },
     reset() {
-      this.remaining = this.time
+      this.remaining = this.timer.time
+      this.$store.commit('setTimer', {id: this.id, timer: {status: 'ready'}})
     },
     playSound() {
-      const audio = new Audio(`./media/${this.sound}.mp3`)
+      const audio = new Audio(`./media/${this.timer.sound}.mp3`)
       audio.play()
     },
     edit() {
@@ -84,20 +91,33 @@ export default {
     },
     remove() {
       this.$store.commit('removeTimer', this.id)
+    },
+    test() {
+      this.$store.commit('setTimer', {id: this.id, data: {status: 'active'}})
     }
   },
   computed: {
-    soundName() { return sounds[this.sound] },
+    timer() { return this.$store.getters.getTimerById(this.id) },
+    status() { return this.timer.status },
+    soundName() { return sounds[this.timer.sound] },
     startDisabled() {
       return (this.remaining === 0)
     },
     resetDisabled() {
       if (this.intervalId) return true
-      if (this.remaining === this.time) return true
+      if (this.remaining === this.timer.time) return true
       return false
     },
     icon () {
       return faSound
+    }
+  },
+  watch: {
+    status(newStatus, oldStatus) {
+      if (newStatus === 'active' ) {
+        this.start()
+      }
+      console.log('STATUS CHANGED')
     }
   },
   components: {

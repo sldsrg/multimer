@@ -57,7 +57,12 @@ export default {
       const time = (this.hrs * 60 + this.mins) * 60 + this.secs
       this.$store.commit('setTimer', {
         id: this.id,
-        timer: {id: this.tempId, sound: this.sound, time}
+        timer: {
+          id: this.tempId,
+          sound: this.sound,
+          time,
+          status: 'ready'
+        }
       })
       this.$router.go(-1)
     }

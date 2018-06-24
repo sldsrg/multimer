@@ -4,6 +4,7 @@
       <timer v-bind:id="t.id"/>
     </div>
     <button class="add" @click="add">Add</button>
+    <button @click="test">Test</button>
   </div>
 </template>
 
@@ -23,8 +24,12 @@ export default {
     ...mapMutations(['addTimer']),
     add() {
       this.addTimer({
-        time: 300
+        time: 300,
+        status: 'ready'
       })
+    },
+    test() {
+      this.$store.commit('setAllTimers', {status: 'active'})
     }
   }
 }

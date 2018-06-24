@@ -15,8 +15,8 @@ describe('Timer.vue component', () => {
   beforeEach(() => {
     const state = {
       timers: [
-        {id: 't1', time: 300, sound: 'chime', active: false},
-        {id: 't2', time: 600, sound: 'whoosh', active: false}
+        {id: 't1', time: 300, sound: 'chime', status: 'idle'},
+        {id: 't2', time: 600, sound: 'whoosh', status: 'idle'}
       ]
     }
     store = new Vuex.Store({
@@ -36,7 +36,7 @@ describe('Timer.vue component', () => {
   })
 
   it('call setInterval when timer become active', () => {
-    wrapper.vm.$store.commit('activateAll')
+    wrapper.vm.$store.commit('setTimer', {id: 't1', data: {status: 'active'}})
     expect(wrapper.vm.intervalId).toBeDefined()
   })
 

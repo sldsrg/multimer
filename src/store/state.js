@@ -1,3 +1,4 @@
 export default {
-  timers: []
+  timers: [],
+  order: 'man'
 }

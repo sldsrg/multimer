@@ -3,8 +3,8 @@
     <div>
       <span class="counter">{{formatTime(remaining)}}</span>
       <span class="controls">
-        <button class="startStop" :disabled=startDisabled @click="startStop">{{intervalId ? 'Stop' : 'Start'}}</button>
-        <button class="reset" :disabled=resetDisabled @click="reset">
+        <button class="startStop" :disabled=startDisabled @click="onStartStop">{{intervalId ? 'Stop' : 'Start'}}</button>
+        <button class="reset" :disabled=resetDisabled @click="onReset">
           Reset
         </button>
       </span>
@@ -13,9 +13,9 @@
       <span>{{id}} ({{formatTime(timer.time)}})</span>
       <font-awesome-icon :icon="icon" />
       <span>{{soundName}}</span>
-      <a href="#" @click.prevent="edit">edit</a>
-      <a href="#" @click.prevent="remove">remove</a>
-      {{status}} <button @click="test">test</button>
+      <a href="#" @click.prevent="onEdit">edit</a>
+      <a href="#" @click.prevent="onRemove">remove</a>
+      Status: {{status}}
     </div>
     <div class="progress">
       <progress :value="remaining" :max="timer.time"/>
@@ -42,6 +42,9 @@ export default {
       required: true
     }
   },
+  created() {
+    this.onStatus(this.timer.status)
+  },
   methods: {
     formatTime(t) {
       const pad = num => ('0' + num).substr(-2)
@@ -49,23 +52,6 @@ export default {
       const minutes = Math.floor((t - hours * 3600) / 60)
       const seconds = t - hours * 3600 - minutes * 60
       return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-    },
-    startStop() {
-      if (this.intervalId) {
-        // stop timer
-        clearInterval(this.intervalId)
-        this.intervalId = undefined
-      } else {
-        // start timer
-        this.intervalId = setInterval(this.tick, 1000)
-      }
-    },
-    start() {
-      if (this.intervalId) {
-        throw new Error('Timer already started')
-      } else {
-        this.intervalId = setInterval(this.tick, 1000)
-      }
     },
     tick() {
       this.remaining -= 1
@@ -75,25 +61,52 @@ export default {
         this.playSound()
       }
     },
-    reset() {
-      this.remaining = this.timer.time
-      this.$store.commit('setTimer', {id: this.id, timer: {status: 'ready'}})
-    },
     playSound() {
       const audio = new Audio(`./media/${this.timer.sound}.mp3`)
       audio.play()
     },
-    edit() {
+    onStartStop() {
+      if (this.status === 'active') {
+        this.$store.commit('setTimer', {id: this.id, data: {status: 'paused'}})
+      } else {
+        this.$store.commit('setTimer', {id: this.id, data: {status: 'active'}})
+      }
+    },
+    onReset() {
+      this.$store.commit('setTimer', {id: this.id, data: {status: 'ready'}})
+    },
+    onEdit() {
       this.$router.push({
         name: 'ModifyTimer',
         params: {id: this.id}
       })
     },
-    remove() {
+    onRemove() {
       this.$store.commit('removeTimer', this.id)
     },
-    test() {
-      this.$store.commit('setTimer', {id: this.id, data: {status: 'active'}})
+    onStatus(status) {
+      switch (status) {
+        case 'active':
+          if (this.intervalId) {
+            //throw new Error('Timer already started')
+          } else {
+            this.intervalId = setInterval(this.tick, 1000)
+          }
+          break
+        case 'ready':
+          this.remaining = this.timer.time
+          break
+        case 'completed':
+        case 'paused':
+          if (this.intervalId) {
+            // stop timer
+            clearInterval(this.intervalId)
+            this.intervalId = undefined
+          } else {
+            //throw new Error('Timer already stoped')
+          }
+          break
+      }
     }
   },
   computed: {
@@ -101,7 +114,7 @@ export default {
     status() { return this.timer.status },
     soundName() { return sounds[this.timer.sound] },
     startDisabled() {
-      return (this.remaining === 0)
+      return (this.status === 'completed')
     },
     resetDisabled() {
       if (this.intervalId) return true
@@ -114,15 +127,7 @@ export default {
   },
   watch: {
     status(newStatus, oldStatus) {
-      switch (newStatus) {
-        case 'active':
-          this.start()
-          break
-        case 'ready':
-          break
-        case 'completed':
-          break
-      }
+      this.onStatus(newStatus)
     }
   },
   components: {

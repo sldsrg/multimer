@@ -3,8 +3,18 @@
     <div v-for="(t, i) in timers" :key="i">
       <timer v-bind:id="t.id"/>
     </div>
-    <button class="add" @click="add">Add</button>
-    <button @click="test">Test</button>
+    <a class="add" @click.prevent="add" href="#">Add {{timers.length > 0 ? 'another timer' : 'timer'}}</a>
+    <div>
+      Timers order:
+      <select name="mode" id="mode">
+        <option value="all">All together</option>
+        <option value="seq">Start in sequence</option>
+        <option value="man">Manually</option>
+      </select>
+    </div>
+    <button @click="test('active')">Start</button>
+    <button @click="test('paused')">Stop</button>
+    <button @click="test('ready')">Reset</button>
   </div>
 </template>
 
@@ -28,8 +38,8 @@ export default {
         status: 'ready'
       })
     },
-    test() {
-      this.$store.commit('setAllTimers', {status: 'active'})
+    test(status) {
+      this.$store.commit('setAllTimers', {status})
     }
   }
 }

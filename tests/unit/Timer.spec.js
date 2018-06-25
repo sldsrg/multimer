@@ -9,14 +9,16 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Timer.vue component', () => {
-  let wrapper
   let store
 
   beforeEach(() => {
+    jest.useFakeTimers()
     const state = {
       timers: [
-        {id: 't1', time: 300, sound: 'chime', status: 'ready'},
-        {id: 't2', time: 600, sound: 'whoosh', status: 'ready'}
+        {id: 't_ready', time: 300, sound: 'chime', status: 'ready'},
+        {id: 't_active', time: 600, sound: 'whoosh', status: 'active'},
+        {id: 't_paused', time: 600, sound: 'whoosh', status: 'paused'},
+        {id: 't_completed', time: 600, sound: 'whoosh', status: 'completed'}
       ]
     }
     store = new Vuex.Store({
@@ -24,78 +26,73 @@ describe('Timer.vue component', () => {
       getters,
       mutations
     })
-    wrapper = mount(Timer, {
-      store,
-      localVue,
-      propsData: {id: 't1'}
-    })
   })
 
   it('renders correct time', () => {
+    const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
     expect(wrapper.html()).toContain('<span class="counter">00:05:00</span>')
   })
 
-  it('call setInterval when timer become active', () => {
-    wrapper.vm.$store.commit('setTimer', {id: 't1', data: {status: 'active'}})
-    expect(wrapper.vm.intervalId).toBeDefined()
-  })
+  describe('status watcher', () => {
+    it('call setInterval when status become "active"', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+      wrapper.vm.$store.commit('setTimer', {id: 't_ready', data: {status: 'active'}})
+      expect(setInterval).toBeCalled()
+    })
 
-  it('call clearInterval when timer paused', () => {
-    wrapper.vm.remaining = 10
-    wrapper.vm.intervalId = 12345 // timer active
-    wrapper.vm.$store.commit('setTimer', {id: 't1', data: {status: 'paused'}})
-    expect(wrapper.vm.intervalId).toBeUndefined()
-  })
+    it('call clearInterval when status become "paused"', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+      wrapper.vm.$store.commit('setTimer', {id: 't_active', data: {status: 'paused'}})
+      expect(clearInterval).toBeCalled()
+    })
 
-  it('call clearInterval when timer completed', () => {
-    wrapper.vm.remaining = 0
-    wrapper.vm.intervalId = 12345 // timer active
-    wrapper.vm.$store.commit('setTimer', {id: 't1', data: {status: 'completed'}})
-    expect(wrapper.vm.intervalId).toBeUndefined()
+    it('call clearInterval when status become "completed"', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+      wrapper.vm.$store.commit('setTimer', {id: 't_active', data: {status: 'completed'}})
+      expect(clearInterval).toBeCalled()
+    })
   })
 
   describe('start/stop button', () => {
-    let button
-    beforeEach(() => {
-      button = wrapper.find('.startStop')
-    })
-
-    it('set intrvalId to undefined when clicked in active state', () => {
-      wrapper.vm.intervalId = 9
+    it('set status to "paused" when clicked in "active" state', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+      const button = wrapper.find('.startStop')
       button.trigger('click')
-      expect(wrapper.vm.intervalId).toBeUndefined()
+      expect(wrapper.vm.status).toBe('paused')
     })
 
-    it('become disabled when timer completed', () => {
-      wrapper.vm.remaining = 0
+    it('become disabled when staus become "completed"', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_completed'} })
+      const button = wrapper.find('.startStop')
       expect(button.attributes().disabled).toBe('disabled')
     })
   })
 
   describe('reset button', () => {
-    let button
-    beforeEach(() => {
-      button = wrapper.find('.reset')
-    })
-
     it('disabled by default', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+      const button = wrapper.find('.reset')
       expect(button.attributes().disabled).toBe('disabled')
     })
 
     it('enabled if remaining time differs from nominal time', () => {
-      wrapper.vm.remaining = 0
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_paused'} })
+      const button = wrapper.find('.reset')
+      wrapper.vm.remaining = 100
       expect(button.attributes().disabled).toBeUndefined()
     })
 
     it('disabled if timer active', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+      const button = wrapper.find('.reset')
       wrapper.vm.remaining = 10
-      wrapper.vm.intervalId = 12345 // timer active
       expect(button.attributes().disabled).toBe('disabled')
     })
 
-    it('enabled if timer stopped and remaining time differs from nominal time', () => {
-      wrapper.vm.remaining = 10
-      wrapper.vm.intervalId = undefined // timer ready
+    it('enabled if timer paused and remaining time differs from nominal time', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_paused'} })
+      const button = wrapper.find('.reset')
+      wrapper.vm.remaining = 100
       expect(button.attributes().disabled).toBeUndefined()
     })
   })

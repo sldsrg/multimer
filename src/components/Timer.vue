@@ -114,10 +114,15 @@ export default {
   },
   watch: {
     status(newStatus, oldStatus) {
-      if (newStatus === 'active' ) {
-        this.start()
+      switch (newStatus) {
+        case 'active':
+          this.start()
+          break
+        case 'ready':
+          break
+        case 'completed':
+          break
       }
-      console.log('STATUS CHANGED')
     }
   },
   components: {

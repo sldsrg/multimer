@@ -5,7 +5,7 @@ export default {
     if (data) {
       const store = JSON.parse(data)
       for (const timer of store.timers) {
-        timer.status = 'idle'
+        timer.status = 'ready'
       }
       Object.assign(state, store)
     }

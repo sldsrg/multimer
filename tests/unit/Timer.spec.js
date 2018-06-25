@@ -15,8 +15,8 @@ describe('Timer.vue component', () => {
   beforeEach(() => {
     const state = {
       timers: [
-        {id: 't1', time: 300, sound: 'chime', status: 'idle'},
-        {id: 't2', time: 600, sound: 'whoosh', status: 'idle'}
+        {id: 't1', time: 300, sound: 'chime', status: 'ready'},
+        {id: 't2', time: 600, sound: 'whoosh', status: 'ready'}
       ]
     }
     store = new Vuex.Store({
@@ -38,6 +38,20 @@ describe('Timer.vue component', () => {
   it('call setInterval when timer become active', () => {
     wrapper.vm.$store.commit('setTimer', {id: 't1', data: {status: 'active'}})
     expect(wrapper.vm.intervalId).toBeDefined()
+  })
+
+  it('call clearInterval when timer paused', () => {
+    wrapper.vm.remaining = 10
+    wrapper.vm.intervalId = 12345 // timer active
+    wrapper.vm.$store.commit('setTimer', {id: 't1', data: {status: 'paused'}})
+    expect(wrapper.vm.intervalId).toBeUndefined()
+  })
+
+  it('call clearInterval when timer completed', () => {
+    wrapper.vm.remaining = 0
+    wrapper.vm.intervalId = 12345 // timer active
+    wrapper.vm.$store.commit('setTimer', {id: 't1', data: {status: 'completed'}})
+    expect(wrapper.vm.intervalId).toBeUndefined()
   })
 
   describe('start/stop button', () => {
@@ -81,7 +95,7 @@ describe('Timer.vue component', () => {
 
     it('enabled if timer stopped and remaining time differs from nominal time', () => {
       wrapper.vm.remaining = 10
-      wrapper.vm.intervalId = undefined // timer idle
+      wrapper.vm.intervalId = undefined // timer ready
       expect(button.attributes().disabled).toBeUndefined()
     })
   })

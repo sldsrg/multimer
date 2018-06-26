@@ -6,34 +6,37 @@
     <a class="add" @click.prevent="add" href="#">Add {{timers.length > 0 ? 'another timer' : 'timer'}}</a>
     <div>
       Timers order:
-      <select name="mode" id="mode">
+      <select name="mode" id="mode" v-model="order">
         <option value="all">All together</option>
         <option value="seq">Start in sequence</option>
         <option value="man">Manually</option>
       </select>
     </div>
-    <button @click="test('active')">Start</button>
-    <button @click="test('paused')">Stop</button>
-    <button @click="test('ready')">Reset</button>
+    <div class="globalControls" v-show="order !== 'man'">
+      <button @click="test('active')">Start</button>
+      <button @click="test('paused')">Stop</button>
+      <button @click="test('ready')">Reset</button>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
 import Timer from './Timer'
 
 export default {
-  name: 'home',
   components: {
     Timer
   },
   computed: {
-    ...mapState(['timers'])
+    timers() { return this.$store.state.timers },
+    order: {
+      get() { return this.$store.state.order },
+      set(value) { this.$store.commit('setOrder', value) }
+    }
   },
   methods: {
-    ...mapMutations(['addTimer']),
     add() {
-      this.addTimer({
+      this.$store.commit('addTimer', {
         time: 300,
         status: 'ready'
       })

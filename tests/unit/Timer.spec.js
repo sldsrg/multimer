@@ -19,7 +19,8 @@ describe('Timer.vue component', () => {
         {id: 't_active', time: 600, sound: 'whoosh', status: 'active'},
         {id: 't_paused', time: 600, sound: 'whoosh', status: 'paused'},
         {id: 't_completed', time: 600, sound: 'whoosh', status: 'completed'}
-      ]
+      ],
+      order: 'man'
     }
     store = new Vuex.Store({
       state,
@@ -53,47 +54,62 @@ describe('Timer.vue component', () => {
     })
   })
 
-  describe('start/stop button', () => {
-    it('set status to "paused" when clicked in "active" state', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
-      const button = wrapper.find('.startStop')
-      button.trigger('click')
-      expect(wrapper.vm.status).toBe('paused')
-    })
-
-    it('become disabled when staus become "completed"', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_completed'} })
-      const button = wrapper.find('.startStop')
-      expect(button.attributes().disabled).toBe('disabled')
-    })
-  })
-
-  describe('reset button', () => {
-    it('disabled by default', () => {
+  describe('controls', () => {
+    it('visible when timers order set to "man"', () => {
       const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
-      const button = wrapper.find('.reset')
-      expect(button.attributes().disabled).toBe('disabled')
+      const ctl = wrapper.find('.controls')
+      expect(ctl.element.style.display).toBe('')
     })
 
-    it('enabled if remaining time differs from nominal time', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_paused'} })
-      const button = wrapper.find('.reset')
-      wrapper.vm.remaining = 100
-      expect(button.attributes().disabled).toBeUndefined()
+    it('hidden when timers order set to "all"', () => {
+      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+      wrapper.vm.$store.commit('setOrder', 'all')
+      const ctl = wrapper.find('.controls')
+      expect(ctl.element.style.display).toBe('none')
     })
 
-    it('disabled if timer active', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
-      const button = wrapper.find('.reset')
-      wrapper.vm.remaining = 10
-      expect(button.attributes().disabled).toBe('disabled')
+    describe('start/stop button', () => {
+      it('set status to "paused" when clicked in "active" state', () => {
+        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+        const button = wrapper.find('.startStop')
+        button.trigger('click')
+        expect(wrapper.vm.status).toBe('paused')
+      })
+
+      it('become disabled when staus become "completed"', () => {
+        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_completed'} })
+        const button = wrapper.find('.startStop')
+        expect(button.attributes().disabled).toBe('disabled')
+      })
     })
 
-    it('enabled if timer paused and remaining time differs from nominal time', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_paused'} })
-      const button = wrapper.find('.reset')
-      wrapper.vm.remaining = 100
-      expect(button.attributes().disabled).toBeUndefined()
+    describe('reset button', () => {
+      it('disabled by default', () => {
+        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+        const button = wrapper.find('.reset')
+        expect(button.attributes().disabled).toBe('disabled')
+      })
+
+      it('enabled if remaining time differs from nominal time', () => {
+        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_paused'} })
+        const button = wrapper.find('.reset')
+        wrapper.vm.remaining = 100
+        expect(button.attributes().disabled).toBeUndefined()
+      })
+
+      it('disabled if timer active', () => {
+        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+        const button = wrapper.find('.reset')
+        wrapper.vm.remaining = 10
+        expect(button.attributes().disabled).toBe('disabled')
+      })
+
+      it('enabled if timer paused and remaining time differs from nominal time', () => {
+        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_paused'} })
+        const button = wrapper.find('.reset')
+        wrapper.vm.remaining = 100
+        expect(button.attributes().disabled).toBeUndefined()
+      })
     })
   })
 })

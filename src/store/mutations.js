@@ -26,5 +26,9 @@ export default {
 
   removeTimer(state, id) {
     state.timers = state.timers.filter(t => t.id !== id)
+  },
+
+  setOrder(state, value) {
+    state.order = value
   }
 }

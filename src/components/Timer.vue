@@ -2,8 +2,10 @@
   <div>
     <div>
       <span class="counter">{{formatTime(remaining)}}</span>
-      <span class="controls">
-        <button class="startStop" :disabled=startDisabled @click="onStartStop">{{intervalId ? 'Stop' : 'Start'}}</button>
+      <span class="controls" v-show="order === 'man'">
+        <button class="startStop" :disabled=startDisabled @click="onStartStop">
+          {{intervalId ? 'Stop' : 'Start'}}
+        </button>
         <button class="reset" :disabled=resetDisabled @click="onReset">
           Reset
         </button>
@@ -110,6 +112,7 @@ export default {
     }
   },
   computed: {
+    order() { return this.$store.state.order },
     timer() { return this.$store.getters.getTimerById(this.id) },
     status() { return this.timer.status },
     soundName() { return sounds[this.timer.sound] },

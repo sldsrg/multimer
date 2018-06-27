@@ -1,4 +1,5 @@
 export default {
   timers: [],
-  order: 'man'
+  order: 'man',
+  status: 'ready'
 }

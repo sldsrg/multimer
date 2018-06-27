@@ -13,9 +13,14 @@
       </select>
     </div>
     <div class="globalControls" v-show="order !== 'man'">
-      <button @click="test('active')">Start</button>
-      <button @click="test('paused')">Stop</button>
-      <button @click="test('ready')">Reset</button>
+      <button class="globalStartStop" @click="onStartStop"
+      :disabled="status === 'completed'" >
+        {{status === 'active' ? 'Stop' : 'Start'}}
+      </button>
+      <button class="globalReset" @click="onReset"
+      :disabled="status === 'active' || status === 'ready'" >
+        Reset
+      </button>
     </div>
   </div>
 </template>
@@ -29,6 +34,7 @@ export default {
   },
   computed: {
     timers() { return this.$store.state.timers },
+    status() { return this.$store.state.status },
     order: {
       get() { return this.$store.state.order },
       set(value) { this.$store.commit('setOrder', value) }
@@ -41,8 +47,15 @@ export default {
         status: 'ready'
       })
     },
-    test(status) {
-      this.$store.commit('setAllTimers', {status})
+    onStartStop() {
+      if (this.status === 'active') {
+        this.$store.commit('setGlobalStatus', 'paused')
+      } else {
+        this.$store.commit('setGlobalStatus', 'active')
+      }
+    },
+    onReset() {
+      this.$store.commit('setGlobalStatus', 'ready')
     }
   }
 }

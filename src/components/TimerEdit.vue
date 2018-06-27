@@ -57,7 +57,7 @@ export default {
       const time = (this.hrs * 60 + this.mins) * 60 + this.secs
       this.$store.commit('setTimer', {
         id: this.id,
-        timer: {
+        data: {
           id: this.tempId,
           sound: this.sound,
           time,

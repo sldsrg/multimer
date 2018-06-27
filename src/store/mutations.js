@@ -20,15 +20,16 @@ export default {
     state.timers = state.timers.map(t => t.id === id ? {...t, ...data, id} : t)
   },
 
-  setAllTimers(state, data) {
-    state.timers = state.timers.map(t => Object.assign(t, data))
-  },
-
   removeTimer(state, id) {
     state.timers = state.timers.filter(t => t.id !== id)
   },
 
   setOrder(state, value) {
     state.order = value
+  },
+
+  setGlobalStatus(state, value) {
+    state.status = value
+    state.timers = state.timers.map(t => Object.assign(t, {status: value}))
   }
 }

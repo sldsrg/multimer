@@ -3,10 +3,12 @@
     <div>
       <span class="counter">{{formatTime(remaining)}}</span>
       <span class="controls" v-show="order === 'man'">
-        <button class="startStop" :disabled=startDisabled @click="onStartStop">
-          {{intervalId ? 'Stop' : 'Start'}}
+        <button class="startStop" @click="onStartStop"
+        :disabled="status === 'completed'" >
+          {{status === 'active' ? 'Stop' : 'Start'}}
         </button>
-        <button class="reset" :disabled=resetDisabled @click="onReset">
+        <button class="reset" @click="onReset"
+        :disabled="status === 'ready' || status === 'active'" >
           Reset
         </button>
       </span>
@@ -116,17 +118,7 @@ export default {
     timer() { return this.$store.getters.getTimerById(this.id) },
     status() { return this.timer.status },
     soundName() { return sounds[this.timer.sound] },
-    startDisabled() {
-      return (this.status === 'completed')
-    },
-    resetDisabled() {
-      if (this.intervalId) return true
-      if (this.remaining === this.timer.time) return true
-      return false
-    },
-    icon () {
-      return faSound
-    }
+    icon() { return faSound }
   },
   watch: {
     status(newStatus, oldStatus) {

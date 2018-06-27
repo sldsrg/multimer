@@ -18,7 +18,8 @@ describe('Home.vue component', () => {
         {id: 't1', time: 300, sound: 'chime', status: 'ready'},
         {id: 't2', time: 600, sound: 'whoosh', status: 'ready'}
       ],
-      order: 'man'
+      order: 'man',
+      status: 'ready'
     }
     const store = new Vuex.Store({
       state,
@@ -28,7 +29,7 @@ describe('Home.vue component', () => {
     wrapper = mount(Home, { store, localVue, propsData: {} })
   })
 
-  it('contains "add" button', () => {
+  it('contains "Add another timer" link', () => {
     const button = wrapper.find('.add')
     expect(button.text()).toBe('Add another timer')
   })
@@ -42,5 +43,82 @@ describe('Home.vue component', () => {
     wrapper.vm.$store.commit('setOrder', 'all')
     const ctl = wrapper.find('.globalControls')
     expect(ctl.element.style.display).toBe('')
+  })
+
+  describe('global start/stop button', () => {
+    let button
+
+    beforeEach(() => {
+      wrapper.vm.$store.commit('setOrder', 'all')
+      button = wrapper.find('.globalStartStop')
+    })
+
+    it('enabled when status "ready"', () => {
+      expect(button.attributes().disabled).toBeUndefined()
+    })
+
+    it('display "Start" when status "ready"', () => {
+      expect(button.text()).toBe('Start')
+    })
+
+    it('enabled when status "active"', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'active')
+      expect(button.attributes().disabled).toBeUndefined()
+    })
+
+    it('display "Stop" when status "active"', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'active')
+      expect(button.text()).toBe('Stop')
+    })
+
+    it('set status to "paused" if clicked when status "active"', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'active')
+      button.trigger('click')
+      expect(wrapper.vm.status).toBe('paused')
+    })
+
+    it('enabled when status "paused"', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'paused')
+      expect(button.attributes().disabled).toBeUndefined()
+    })
+
+    it('disabled when staus "completed"', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'completed')
+      expect(button.attributes().disabled).toBe('disabled')
+    })
+  })
+
+  describe('global reset button', () => {
+    let button
+
+    beforeEach(() => {
+      wrapper.vm.$store.commit('setOrder', 'all')
+      button = wrapper.find('.globalReset')
+    })
+
+    it('disabled when status "ready"', () => {
+      expect(button.attributes().disabled).toBe('disabled')
+    })
+
+    it('disabled when status "active"', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'active')
+      expect(button.attributes().disabled).toBe('disabled')
+    })
+
+    it('enabled when status "paused"', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'paused')
+      expect(button.attributes().disabled).toBeUndefined()
+    })
+
+    it('enabled when status "completed"', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'completed')
+      expect(button.attributes().disabled).toBeUndefined()
+    })
+
+    it('set status to "ready" if clicked', () => {
+      wrapper.vm.$store.commit('setGlobalStatus', 'completed')
+      button.trigger('click')
+      expect(wrapper.vm.status).toBe('ready')
+    })
   })
 })

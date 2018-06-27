@@ -785,9 +785,9 @@
   version "0.0.30"
   resolved "https://registry.yarnpkg.com/@types/strip-json-comments/-/strip-json-comments-0.0.30.tgz#9aa30c04db212a9a0649d6ae6fd50accc40748a1"
 
-"@vue/babel-preset-app@^3.0.0-rc.2":
-  version "3.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vue/babel-preset-app/-/babel-preset-app-3.0.0-rc.2.tgz#2843a47fc1e515425b05e597d1f0226977ef0cc5"
+"@vue/babel-preset-app@^3.0.0-rc.3":
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue/babel-preset-app/-/babel-preset-app-3.0.0-rc.3.tgz#e4f5f884448489b1b4651c986548639f3bec823f"
   dependencies:
     "@babel/plugin-syntax-jsx" "7.0.0-beta.47"
     "@babel/plugin-transform-runtime" "7.0.0-beta.47"
@@ -798,34 +798,34 @@
     babel-plugin-dynamic-import-node "^1.2.0"
     babel-plugin-transform-vue-jsx "^4.0.1"
 
-"@vue/cli-overlay@^3.0.0-rc.2":
-  version "3.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vue/cli-overlay/-/cli-overlay-3.0.0-rc.2.tgz#6ed6938bff3b45e01ecfae01a2f8b7debccdd387"
+"@vue/cli-overlay@^3.0.0-rc.3":
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue/cli-overlay/-/cli-overlay-3.0.0-rc.3.tgz#4ebb2236bd48a30b08e8b02e34331fd8a91c5437"
 
-"@vue/cli-plugin-babel@^3.0.0-rc.2":
-  version "3.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-babel/-/cli-plugin-babel-3.0.0-rc.2.tgz#caea015d3951d9f8d0582779076f2a895489fc7c"
+"@vue/cli-plugin-babel@~3.0.0-rc.3":
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-babel/-/cli-plugin-babel-3.0.0-rc.3.tgz#7da19b25e67b6d752b27d34a6b209928fcf9a3a6"
   dependencies:
     "@babel/core" "7.0.0-beta.47"
-    "@vue/babel-preset-app" "^3.0.0-rc.2"
+    "@vue/babel-preset-app" "^3.0.0-rc.3"
     babel-loader "^8.0.0-0"
 
-"@vue/cli-plugin-eslint@^3.0.0-rc.2":
-  version "3.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-eslint/-/cli-plugin-eslint-3.0.0-rc.2.tgz#e44ae313f2d5cbd414bb6c595e172eef3316449b"
+"@vue/cli-plugin-eslint@~3.0.0-rc.3":
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-eslint/-/cli-plugin-eslint-3.0.0-rc.3.tgz#9248d44f7d44ab8523346ff75486e26a20d51e94"
   dependencies:
-    "@vue/cli-shared-utils" "^3.0.0-rc.2"
+    "@vue/cli-shared-utils" "^3.0.0-rc.3"
     babel-eslint "^8.2.3"
     eslint "^4.19.1"
     eslint-loader "^2.0.0"
     eslint-plugin-vue "^4.5.0"
     launch-editor "^2.2.1"
 
-"@vue/cli-plugin-unit-jest@^3.0.0-rc.2":
-  version "3.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-unit-jest/-/cli-plugin-unit-jest-3.0.0-rc.2.tgz#1eddcf33744d32f933d949bc0ac5e5aa199b0196"
+"@vue/cli-plugin-unit-jest@~3.0.0-rc.3":
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-unit-jest/-/cli-plugin-unit-jest-3.0.0-rc.3.tgz#d2c7a910120cc50f71d4f1cc6ccfa1fd09e890c2"
   dependencies:
-    "@vue/cli-shared-utils" "^3.0.0-rc.2"
+    "@vue/cli-shared-utils" "^3.0.0-rc.3"
     babel-jest "^23.0.1"
     babel-plugin-transform-es2015-modules-commonjs "^6.26.2"
     jest "^23.1.0"
@@ -833,12 +833,12 @@
     jest-transform-stub "^1.0.0"
     vue-jest "^2.6.0"
 
-"@vue/cli-service@^3.0.0-rc.2":
-  version "3.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vue/cli-service/-/cli-service-3.0.0-rc.2.tgz#8220ba047ce62f3112bdd5614478b8bc4f052b3f"
+"@vue/cli-service@~3.0.0-rc.3":
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue/cli-service/-/cli-service-3.0.0-rc.3.tgz#8ffd2c707745c0cff5918ee56a6edb3d948f697c"
   dependencies:
-    "@vue/cli-overlay" "^3.0.0-rc.2"
-    "@vue/cli-shared-utils" "^3.0.0-rc.2"
+    "@vue/cli-overlay" "^3.0.0-rc.3"
+    "@vue/cli-shared-utils" "^3.0.0-rc.3"
     "@vue/preload-webpack-plugin" "^1.0.0"
     "@vue/web-component-wrapper" "^1.2.0"
     acorn "^5.5.3"
@@ -887,9 +887,9 @@
     webpack-merge "^4.1.2"
     yorkie "^1.0.3"
 
-"@vue/cli-shared-utils@^3.0.0-rc.2":
-  version "3.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vue/cli-shared-utils/-/cli-shared-utils-3.0.0-rc.2.tgz#8b4d61754a7a078e616a6028e4b8e7e04964536f"
+"@vue/cli-shared-utils@^3.0.0-rc.3":
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue/cli-shared-utils/-/cli-shared-utils-3.0.0-rc.3.tgz#5fa73945ad82fc8b6e1e88bd171225c8388a8801"
   dependencies:
     chalk "^2.3.0"
     execa "^0.10.0"
@@ -915,9 +915,9 @@
     source-map "^0.5.6"
     vue-template-es2015-compiler "^1.6.0"
 
-"@vue/eslint-config-standard@^3.0.0-rc.2":
-  version "3.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vue/eslint-config-standard/-/eslint-config-standard-3.0.0-rc.2.tgz#b3963784ef7d38fafafec4927b9b9f8e1333d065"
+"@vue/eslint-config-standard@~3.0.0-rc.3":
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue/eslint-config-standard/-/eslint-config-standard-3.0.0-rc.3.tgz#a265e2898280ca4215bc51f48e491e471b081c55"
   dependencies:
     eslint-config-standard "^12.0.0-alpha.0"
     eslint-plugin-import "^2.11.0"
@@ -929,7 +929,7 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@vue/preload-webpack-plugin/-/preload-webpack-plugin-1.0.0.tgz#08f156532909824da2aad258e151742d1e8f822e"
 
-"@vue/test-utils@^1.0.0-beta.20":
+"@vue/test-utils@~1.0.0-beta.20":
   version "1.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-1.0.0-beta.20.tgz#ef4505341b802f3de1c06b3cb8651378c87371fa"
   dependencies:
@@ -1218,10 +1218,6 @@ app-builder-bin@1.9.5:
   version "1.9.5"
   resolved "https://registry.yarnpkg.com/app-builder-bin/-/app-builder-bin-1.9.5.tgz#f4e2b26e26578c9a48cea85da44f0bc1a7582fc0"
 
-app-builder-bin@1.9.7:
-  version "1.9.7"
-  resolved "https://registry.yarnpkg.com/app-builder-bin/-/app-builder-bin-1.9.7.tgz#9f01439fa8088a43471df9e5e071dd3880a8cff0"
-
 append-transform@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/append-transform/-/append-transform-1.0.0.tgz#046a52ae582a228bd72f58acfbe2967c678759ab"
@@ -1485,7 +1481,7 @@ babel-helpers@^6.24.1:
     babel-runtime "^6.22.0"
     babel-template "^6.24.1"
 
-babel-jest@^23.0.1:
+babel-jest@^23.0.1, babel-jest@~23.0.1:
   version "23.0.1"
   resolved "https://registry.yarnpkg.com/babel-jest/-/babel-jest-23.0.1.tgz#bbad3bf523fb202da05ed0a6540b48c84eed13a6"
   dependencies:
@@ -1901,26 +1897,7 @@ builder-util@5.11.1:
     stat-mode "^0.2.2"
     temp-file "^3.1.2"
 
-builder-util@5.11.2:
-  version "5.11.2"
-  resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-5.11.2.tgz#2d4829f0743ce1b654e94586fade63fd6cfefae5"
-  dependencies:
-    "7zip-bin" "~4.0.2"
-    app-builder-bin "1.9.7"
-    bluebird-lst "^1.0.5"
-    builder-util-runtime "^4.2.1"
-    chalk "^2.4.1"
-    debug "^3.1.0"
-    fs-extra-p "^4.6.0"
-    is-ci "^1.1.0"
-    js-yaml "^3.11.0"
-    lazy-val "^1.0.3"
-    semver "^5.5.0"
-    source-map-support "^0.5.6"
-    stat-mode "^0.2.2"
-    temp-file "^3.1.2"
-
-builder-util@^5.11.0, builder-util@^5.11.2:
+builder-util@5.11.4, builder-util@^5.11.0, builder-util@^5.11.2:
   version "5.11.4"
   resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-5.11.4.tgz#24d72aa567ecfeacca72b0740b4ddbffaaef617c"
   dependencies:
@@ -3003,15 +2980,15 @@ ejs@^2.5.7, ejs@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.6.1.tgz#498ec0d495655abc6f23cd61868d926464071aa0"
 
-electron-builder-lib@20.15.1:
-  version "20.15.1"
-  resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-20.15.1.tgz#d2675e71918f62561cf5ecae633dfe5f4219d0e3"
+electron-builder-lib@20.15.3:
+  version "20.15.3"
+  resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-20.15.3.tgz#bac8e4630b7994617398e2405b5c3c4e71b37cc0"
   dependencies:
     "7zip-bin" "~4.0.2"
-    app-builder-bin "1.9.7"
+    app-builder-bin "1.9.11"
     async-exit-hook "^2.0.1"
     bluebird-lst "^1.0.5"
-    builder-util "5.11.2"
+    builder-util "5.11.4"
     builder-util-runtime "4.2.1"
     chromium-pickle-js "^0.2.0"
     debug "^3.1.0"
@@ -3063,16 +3040,16 @@ electron-builder-lib@~20.14.6:
     stream-json "^0.6.1"
     temp-file "^3.1.2"
 
-electron-builder@^20.15.1:
-  version "20.15.1"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.15.1.tgz#078cda29bdb7240244e9bccf30740b1ea42deb44"
+electron-builder@~20.15.1:
+  version "20.15.3"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.15.3.tgz#691e6e03392438fbc23b3cef1e9b78562a9e5c64"
   dependencies:
     bluebird-lst "^1.0.5"
-    builder-util "5.11.2"
+    builder-util "5.11.4"
     builder-util-runtime "4.2.1"
     chalk "^2.4.1"
     dmg-builder "4.10.1"
-    electron-builder-lib "20.15.1"
+    electron-builder-lib "20.15.3"
     electron-download-tf "4.3.4"
     fs-extra-p "^4.6.0"
     is-ci "^1.1.0"
@@ -8501,7 +8478,7 @@ vue-loader@^15.2.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-router@^3.0.1:
+vue-router@~3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
 
@@ -8512,7 +8489,7 @@ vue-style-loader@^4.1.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-template-compiler@^2.5.16:
+vue-template-compiler@^2.5.16, vue-template-compiler@~2.5.16:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.16.tgz#93b48570e56c720cdf3f051cc15287c26fbd04cb"
   dependencies:
@@ -8523,11 +8500,11 @@ vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
-vue@^2.5.16:
+vue@~2.5.16:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
-vuex@^3.0.1:
+vuex@~3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"
 

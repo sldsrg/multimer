@@ -69,6 +69,16 @@ describe('Timer.vue component', () => {
     })
 
     describe('start/stop button', () => {
+      it('display "Start" in "ready" state', () => {
+        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+        expect(wrapper.find('.startStop').text()).toBe('Start')
+      })
+
+      it('display "Stop" in "active" state', () => {
+        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+        expect(wrapper.find('.startStop').text()).toBe('Stop')
+      })
+
       it('set status to "paused" when clicked in "active" state', () => {
         const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
         const button = wrapper.find('.startStop')

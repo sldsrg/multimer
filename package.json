@@ -1,5 +1,5 @@
 {
-  "name": "timer",
+  "name": "multimer",
   "version": "0.1.0",
   "author": {
     "email": "soloss@yandex.ru",
@@ -23,22 +23,22 @@
     "@fortawesome/fontawesome-free-regular": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/vue-fontawesome": "^0.0.23",
-    "vue": "^2.5.16",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vue": "~2.5.16",
+    "vue-router": "~3.0.1",
+    "vuex": "~3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-rc.2",
-    "@vue/cli-plugin-eslint": "^3.0.0-rc.2",
-    "@vue/cli-plugin-unit-jest": "^3.0.0-rc.2",
-    "@vue/cli-service": "^3.0.0-rc.2",
-    "@vue/eslint-config-standard": "^3.0.0-rc.2",
-    "@vue/test-utils": "^1.0.0-beta.20",
+    "@vue/cli-plugin-babel": "~3.0.0-rc.3",
+    "@vue/cli-plugin-eslint": "~3.0.0-rc.3",
+    "@vue/cli-plugin-unit-jest": "~3.0.0-rc.3",
+    "@vue/cli-service": "~3.0.0-rc.3",
+    "@vue/eslint-config-standard": "~3.0.0-rc.3",
+    "@vue/test-utils": "~1.0.0-beta.20",
     "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "^23.0.1",
+    "babel-jest": "~23.0.1",
     "electron": "2.0.2",
-    "electron-builder": "^20.15.1",
-    "vue-template-compiler": "^2.5.16"
+    "electron-builder": "~20.15.1",
+    "vue-template-compiler": "~2.5.16"
   },
   "browserslist": [
     "> 1%",

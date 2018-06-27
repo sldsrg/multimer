@@ -1,5 +1,8 @@
 module.exports = {
   baseUrl: './',
   lintOnSave: false,
-  outputDir: 'build'
+  outputDir: 'build',
+  configureWebpack: {
+    devtool: 'source-map'
+  }
 }

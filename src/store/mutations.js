@@ -29,9 +29,9 @@ export default {
   },
 
   setGlobalStatus(state, value) {
-    state.status = value
     state.timers = state.timers.map(t => {
       switch (value) {
+        case 'completed':
         case 'ready': return Object.assign(t, {status: value})
         case 'paused': return t.status === 'active' ? Object.assign(t, {status: value}) : t
         case 'active': return t.status === 'completed' ? t : Object.assign(t, {status: value})

@@ -21,6 +21,7 @@
       :disabled="status === 'active' || status === 'ready'" >
         Reset
       </button>
+      Status: {{status}}
     </div>
   </div>
 </template>
@@ -34,7 +35,7 @@ export default {
   },
   computed: {
     timers() { return this.$store.state.timers },
-    status() { return this.$store.state.status },
+    status() { return this.$store.getters.getGlobalStatus },
     order: {
       get() { return this.$store.state.order },
       set(value) { this.$store.commit('setOrder', value) }

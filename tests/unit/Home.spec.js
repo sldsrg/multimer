@@ -1,4 +1,4 @@
-import { createLocalVue, mount } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vuex from 'vuex'
 
 import getters from '@/store/getters'
@@ -18,15 +18,10 @@ describe('Home.vue component', () => {
         {id: 't1', time: 300, sound: 'chime', status: 'ready'},
         {id: 't2', time: 600, sound: 'whoosh', status: 'ready'}
       ],
-      order: 'man',
-      status: 'ready'
+      order: 'man'
     }
-    const store = new Vuex.Store({
-      state,
-      getters,
-      mutations
-    })
-    wrapper = mount(Home, { store, localVue, propsData: {} })
+    const store = new Vuex.Store({ state, getters, mutations })
+    wrapper = shallowMount(Home, { store, localVue })
   })
 
   it('contains "Add another timer" link', () => {
@@ -106,12 +101,22 @@ describe('Home.vue component', () => {
     })
 
     it('enabled when status "paused"', () => {
-      wrapper.vm.$store.commit('setGlobalStatus', 'paused')
-      expect(button.attributes().disabled).toBeUndefined()
+      const state = {
+        timers: [
+          {id: 't1', time: 300, sound: 'chime', status: 'paused'},
+          {id: 't2', time: 600, sound: 'whoosh', status: 'paused'}
+        ],
+        order: 'all'
+      }
+      const store = new Vuex.Store({ state, getters, mutations })
+      wrapper = shallowMount(Home, { store, localVue })
+      expect(wrapper.vm.$store.getters.getGlobalStatus).toBe('paused')
+      expect(wrapper.find('.globalReset').attributes().disabled).toBeUndefined()
     })
 
     it('enabled when status "completed"', () => {
       wrapper.vm.$store.commit('setGlobalStatus', 'completed')
+      expect(wrapper.vm.$store.getters.getGlobalStatus).toBe('completed')
       expect(button.attributes().disabled).toBeUndefined()
     })
 

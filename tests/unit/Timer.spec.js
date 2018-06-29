@@ -1,4 +1,4 @@
-import { createLocalVue, mount } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vuex from 'vuex'
 
 import getters from '@/store/getters'
@@ -30,25 +30,34 @@ describe('Timer.vue component', () => {
   })
 
   it('renders correct time', () => {
-    const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+    const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
     expect(wrapper.html()).toContain('<span class="counter">00:05:00</span>')
   })
 
   describe('status watcher', () => {
     it('call setInterval when status become "active"', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
       wrapper.vm.$store.commit('setTimer', {id: 't_ready', data: {status: 'active'}})
       expect(setInterval).toBeCalled()
     })
 
     it('call clearInterval when status become "paused"', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
       wrapper.vm.$store.commit('setTimer', {id: 't_active', data: {status: 'paused'}})
       expect(clearInterval).toBeCalled()
     })
 
+    it('set status to completed when time is over', () => {
+      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
+      wrapper.vm.playSound = jest.fn()
+      jest.runAllTimers()
+      expect(wrapper.vm.remaining).toBe(0)
+      expect(wrapper.vm.playSound).toHaveBeenCalledTimes(1)
+      expect(wrapper.vm.status).toBe('completed')
+    })
+
     it('call clearInterval when status become "completed"', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
       wrapper.vm.$store.commit('setTimer', {id: 't_active', data: {status: 'completed'}})
       expect(clearInterval).toBeCalled()
     })
@@ -56,13 +65,13 @@ describe('Timer.vue component', () => {
 
   describe('controls', () => {
     it('visible when timers order set to "man"', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
       const ctl = wrapper.find('.controls')
       expect(ctl.element.style.display).toBe('')
     })
 
     it('hidden when timers order set to "all"', () => {
-      const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
       wrapper.vm.$store.commit('setOrder', 'all')
       const ctl = wrapper.find('.controls')
       expect(ctl.element.style.display).toBe('none')
@@ -70,24 +79,24 @@ describe('Timer.vue component', () => {
 
     describe('start/stop button', () => {
       it('display "Start" in "ready" state', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
         expect(wrapper.find('.startStop').text()).toBe('Start')
       })
 
       it('display "Stop" in "active" state', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
         expect(wrapper.find('.startStop').text()).toBe('Stop')
       })
 
       it('set status to "paused" when clicked in "active" state', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
         const button = wrapper.find('.startStop')
         button.trigger('click')
         expect(wrapper.vm.status).toBe('paused')
       })
 
       it('disabled when staus "completed"', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_completed'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_completed'} })
         const button = wrapper.find('.startStop')
         expect(button.attributes().disabled).toBe('disabled')
       })
@@ -95,31 +104,31 @@ describe('Timer.vue component', () => {
 
     describe('reset button', () => {
       it('disabled when status "ready"', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
         const button = wrapper.find('.reset')
         expect(button.attributes().disabled).toBe('disabled')
       })
 
       it('disabled when status "active"', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_active'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
         const button = wrapper.find('.reset')
         expect(button.attributes().disabled).toBe('disabled')
       })
 
       it('enabled when status "paused"', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_paused'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_paused'} })
         const button = wrapper.find('.reset')
         expect(button.attributes().disabled).toBeUndefined()
       })
 
       it('enabled when status "completed"', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_completed'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_completed'} })
         const button = wrapper.find('.reset')
         expect(button.attributes().disabled).toBeUndefined()
       })
 
       it('set status to "ready" when clicked', () => {
-        const wrapper = mount(Timer, { store, localVue, propsData: {id: 't_completed'} })
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_completed'} })
         const button = wrapper.find('.reset')
         button.trigger('click')
         expect(wrapper.vm.status).toBe('ready')

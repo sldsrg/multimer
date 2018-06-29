@@ -40,8 +40,8 @@ export default {
     return {
       tempId: this.id,
       sounds,
-      sound: timer.sound, 
-      hrs, 
+      sound: timer.sound,
+      hrs,
       mins,
       secs
     }

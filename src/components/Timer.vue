@@ -46,7 +46,7 @@ export default {
       required: true
     }
   },
-  created() {
+  mounted() {
     this.onStatus(this.timer.status)
   },
   methods: {
@@ -60,8 +60,7 @@ export default {
     tick() {
       this.remaining -= 1
       if (this.remaining <= 0) {
-        clearInterval(this.intervalId)
-        this.intervalId = undefined
+        this.$store.commit('setTimer', {id: this.id, data: {status: 'completed'}})
         this.playSound()
       }
     },
@@ -92,7 +91,7 @@ export default {
       switch (status) {
         case 'active':
           if (this.intervalId) {
-            //throw new Error('Timer already started')
+            // throw new Error('Timer already started')
           } else {
             this.intervalId = setInterval(this.tick, 1000)
           }
@@ -107,7 +106,7 @@ export default {
             clearInterval(this.intervalId)
             this.intervalId = undefined
           } else {
-            //throw new Error('Timer already stoped')
+            // throw new Error('Timer already stoped')
           }
           break
       }

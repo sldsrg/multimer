@@ -73,7 +73,11 @@ button {
   outline: none;
 }
 
-button:hover {
+button:disabled {
+  background: lightgray;
+}
+
+button:enabled:hover {
   background: #000;
   color: #fff;
   -webkit-transition-duration: .5s;
@@ -84,4 +88,5 @@ button::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
+
 </style>

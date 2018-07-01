@@ -11,7 +11,7 @@
     </div>
     <div>
       Sound:
-      <select v-model="sound">
+      <select v-model="timer.sound">
         <option v-for="(value, key) in sounds" :value="key" :key="key">
           {{value}}
         </option>
@@ -40,7 +40,7 @@ export default {
     return {
       tempId: this.id,
       sounds,
-      sound: timer.sound,
+      timer: {...timer},
       hrs,
       mins,
       secs
@@ -58,10 +58,9 @@ export default {
       this.$store.commit('setTimer', {
         id: this.id,
         data: {
+          ...this.timer,
           id: this.tempId,
-          sound: this.sound,
-          time,
-          status: 'ready'
+          time
         }
       })
       this.$router.go(-1)

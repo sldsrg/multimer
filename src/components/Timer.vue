@@ -36,7 +36,7 @@ export default {
   data() {
     const timer = this.$store.getters.getTimerById(this.id)
     return {
-      remaining: timer ? timer.time : 0,
+      remaining: timer ? timer.remaining : 0,
       intervalId: undefined
     }
   },
@@ -48,6 +48,9 @@ export default {
   },
   mounted() {
     this.onStatus(this.timer.status)
+  },
+  destroyed() {
+    this.$store.commit('setTimer', {id: this.id, data: {remaining: this.remaining}})
   },
   methods: {
     formatTime(t) {

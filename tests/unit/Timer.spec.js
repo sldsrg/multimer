@@ -15,10 +15,10 @@ describe('Timer.vue component', () => {
     jest.useFakeTimers()
     const state = {
       timers: [
-        {id: 't_ready', time: 300, sound: 'chime', status: 'ready'},
-        {id: 't_active', time: 600, sound: 'whoosh', status: 'active'},
-        {id: 't_paused', time: 600, sound: 'whoosh', status: 'paused'},
-        {id: 't_completed', time: 600, sound: 'whoosh', status: 'completed'}
+        {id: 't_ready', remaining: 300, time: 300, sound: 'chime', status: 'ready'},
+        {id: 't_active', remaining: 2, time: 600, sound: 'whoosh', status: 'active'},
+        {id: 't_paused', remaining: 300, time: 600, sound: 'whoosh', status: 'paused'},
+        {id: 't_completed', remaining: 0, time: 600, sound: 'whoosh', status: 'completed'}
       ],
       order: 'man'
     }
@@ -34,6 +34,18 @@ describe('Timer.vue component', () => {
     expect(wrapper.html()).toContain('<span class="counter">00:05:00</span>')
   })
 
+  it('mounted with saved in store value for remaining', () => {
+    const wrapper = shallowMount(Timer, {store, localVue, propsData: {id: 't_active'}})
+    expect(wrapper.vm.remaining).toBe(2)
+  })
+
+  it('save remaining in store when unmounted', () => {
+    const wrapper = shallowMount(Timer, {store, localVue, propsData: {id: 't_active'}})
+    wrapper.vm.tick()
+    wrapper.destroy()
+    expect(store.state.timers[1].remaining).toBe(1)
+  })
+
   describe('status watcher', () => {
     it('call setInterval when status become "active"', () => {
       const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
@@ -47,10 +59,12 @@ describe('Timer.vue component', () => {
       expect(clearInterval).toBeCalled()
     })
 
-    it('set status to completed when time is over', () => {
+    it('set status to completed and play sound when time is over', () => {
       const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
       wrapper.vm.playSound = jest.fn()
-      jest.runAllTimers()
+      // jest.runAllTimers() // endless loop
+      wrapper.vm.tick()
+      wrapper.vm.tick()
       expect(wrapper.vm.remaining).toBe(0)
       expect(wrapper.vm.playSound).toHaveBeenCalledTimes(1)
       expect(wrapper.vm.status).toBe('completed')

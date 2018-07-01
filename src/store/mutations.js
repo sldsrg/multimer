@@ -4,9 +4,6 @@ export default {
     const data = localStorage.getItem('store')
     if (data) {
       const store = JSON.parse(data)
-      for (const timer of store.timers) {
-        timer.status = 'ready'
-      }
       Object.assign(state, store)
     }
   },
@@ -17,7 +14,7 @@ export default {
   },
 
   setTimer(state, {id, data}) {
-    state.timers = state.timers.map(t => t.id === id ? {...t, ...data, id} : t)
+    state.timers = state.timers.map(t => t.id === id ? {id, ...t, ...data} : t)
   },
 
   removeTimer(state, id) {

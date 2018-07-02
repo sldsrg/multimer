@@ -87,4 +87,21 @@ describe('mutations', () => {
       })
     })
   })
+
+  describe('setTimer', () => {
+    describe('when timers order is "seq"', () => {
+      it('called with status "completed" launch next timer', () => {
+        const state = {
+          timers: [
+            {id: 't1', status: 'active'},
+            {id: 't2', status: 'ready'},
+            {id: 't3', status: 'ready'}
+          ],
+          order: 'seq'
+        }
+        mutations.setTimer(state, {id: 't1', data: {status: 'completed'}})
+        expect(state.timers[1].status).toBe('active')
+      })
+    })
+  })
 })

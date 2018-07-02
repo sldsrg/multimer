@@ -1,7 +1,7 @@
 export default {
   getTimerById: state => id => state.timers.find(timer => timer.id === id),
   getGlobalStatus(state) {
-    if (state.order === 'all') {
+    if (state.order !== 'man') {
       let ready = true
       let completed = true
       for (const timer of state.timers) {

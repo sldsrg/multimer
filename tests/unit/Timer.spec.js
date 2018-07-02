@@ -90,6 +90,13 @@ describe('Timer.vue component', () => {
       expect(ctl.element.style.display).toBe('none')
     })
 
+    it('hidden when timers order set to "seq"', () => {
+      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+      wrapper.vm.$store.commit('setOrder', 'seq')
+      const ctl = wrapper.find('.controls')
+      expect(ctl.element.style.display).toBe('none')
+    })
+
     describe('start/stop button', () => {
       it('display "Start" in "ready" state', () => {
         const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })

@@ -26,14 +26,38 @@ export default {
   },
 
   setGlobalStatus(state, value) {
-    state.timers = state.timers.map(t => {
-      switch (value) {
-        case 'completed':
-        case 'ready': return Object.assign(t, {status: value})
-        case 'paused': return t.status === 'active' ? Object.assign(t, {status: value}) : t
-        case 'active': return t.status === 'completed' ? t : Object.assign(t, {status: value})
-        default: return t
+    if (state.order === 'all') {
+      state.timers = state.timers.map(t => {
+        switch (value) {
+          case 'completed':
+          case 'ready': return Object.assign(t, {status: value})
+          case 'paused': return t.status === 'active' ? Object.assign(t, {status: value}) : t
+          case 'active': return t.status === 'completed' ? t : Object.assign(t, {status: value})
+          default: return t
+        }
+      })
+    } else if (state.order === 'seq') {
+      for (const timer of state.timers) {
+        switch (value) {
+          case 'active':
+            if (timer.status === 'ready' || timer.status === 'paused') {
+              timer.status = value
+              return
+            }
+            break
+          case 'paused':
+            if (timer.status === 'active') {
+              timer.status = value
+              return
+            }
+            break
+          case 'ready':
+            timer.status = value
+            break
+          default:
+            break
+        }
       }
-    })
+    }
   }
 }

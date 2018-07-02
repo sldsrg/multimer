@@ -62,9 +62,8 @@ describe('Timer.vue component', () => {
     it('set status to completed and play sound when time is over', () => {
       const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
       wrapper.vm.playSound = jest.fn()
-      // jest.runAllTimers() // endless loop
-      wrapper.vm.tick()
-      wrapper.vm.tick()
+      HTMLMediaElement.prototype.play = jest.fn() // still necessary despite stubbing playSound
+      jest.advanceTimersByTime(2000)
       expect(wrapper.vm.remaining).toBe(0)
       expect(wrapper.vm.playSound).toHaveBeenCalledTimes(1)
       expect(wrapper.vm.status).toBe('completed')

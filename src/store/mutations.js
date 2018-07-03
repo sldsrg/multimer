@@ -15,6 +15,14 @@ export default {
 
   setTimer(state, {id, data}) {
     state.timers = state.timers.map(t => t.id === id ? {id, ...t, ...data} : t)
+    if (state.order === 'seq' && data.status === 'completed') {
+      const current = state.timers.findIndex(t => t.id === id)
+      for (let i = current + 1; i < state.timers.length; i++) {
+        if (state.timers[i].status === 'ready') {
+          state.timers[i].status = 'active'
+        }
+      }
+    }
   },
 
   removeTimer(state, id) {

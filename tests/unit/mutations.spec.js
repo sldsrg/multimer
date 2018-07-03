@@ -100,7 +100,9 @@ describe('mutations', () => {
           order: 'seq'
         }
         mutations.setTimer(state, {id: 't1', data: {status: 'completed'}})
+        expect(state.timers[0].status).toBe('completed')
         expect(state.timers[1].status).toBe('active')
+        expect(state.timers[2].status).toBe('ready')
       })
     })
   })

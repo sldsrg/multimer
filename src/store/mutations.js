@@ -20,6 +20,7 @@ export default {
       for (let i = current + 1; i < state.timers.length; i++) {
         if (state.timers[i].status === 'ready') {
           state.timers[i].status = 'active'
+          break
         }
       }
     }

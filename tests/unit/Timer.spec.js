@@ -29,50 +29,23 @@ describe('Timer.vue component', () => {
     })
   })
 
-  it('renders correct time', () => {
-    const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+  it('renders correct nominal time', () => {
+    const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_paused'} })
+    expect(wrapper.html()).toContain('<span>t_paused (00:10:00)</span>')
+  })
+
+  it('renders correct remaining time', () => {
+    const wrapper = shallowMount(Timer, {store, localVue, propsData: {id: 't_paused'}})
     expect(wrapper.html()).toContain('<span class="counter">00:05:00</span>')
   })
 
-  it('mounted with saved in store value for remaining', () => {
-    const wrapper = shallowMount(Timer, {store, localVue, propsData: {id: 't_active'}})
-    expect(wrapper.vm.remaining).toBe(2)
-  })
-
-  it('save remaining in store when unmounted', () => {
-    const wrapper = shallowMount(Timer, {store, localVue, propsData: {id: 't_active'}})
-    wrapper.vm.tick()
-    wrapper.destroy()
-    expect(store.state.timers[1].remaining).toBe(1)
-  })
-
   describe('status watcher', () => {
-    it('call setInterval when status become "active"', () => {
-      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
-      wrapper.vm.$store.commit('setTimer', {id: 't_ready', data: {status: 'active'}})
-      expect(setInterval).toBeCalled()
-    })
-
-    it('call clearInterval when status become "paused"', () => {
-      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
-      wrapper.vm.$store.commit('setTimer', {id: 't_active', data: {status: 'paused'}})
-      expect(clearInterval).toBeCalled()
-    })
-
     it('set status to completed and play sound when time is over', () => {
       const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
       wrapper.vm.playSound = jest.fn()
-      HTMLMediaElement.prototype.play = jest.fn() // still necessary despite stubbing playSound
-      jest.advanceTimersByTime(2000)
-      expect(wrapper.vm.remaining).toBe(0)
+      wrapper.vm.$store.commit('tick')
+      wrapper.vm.$store.commit('tick')
       expect(wrapper.vm.playSound).toHaveBeenCalledTimes(1)
-      expect(wrapper.vm.status).toBe('completed')
-    })
-
-    it('call clearInterval when status become "completed"', () => {
-      const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
-      wrapper.vm.$store.commit('setTimer', {id: 't_active', data: {status: 'completed'}})
-      expect(clearInterval).toBeCalled()
     })
   })
 

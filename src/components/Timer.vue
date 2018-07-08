@@ -33,24 +33,11 @@ import faSound from '@fortawesome/fontawesome-free-solid/faVolumeUp'
 import sounds from '../assets/sounds'
 
 export default {
-  data() {
-    const timer = this.$store.getters.getTimerById(this.id)
-    return {
-      remaining: timer ? timer.remaining : 0,
-      intervalId: undefined
-    }
-  },
   props: {
     id: {
       type: String,
       required: true
     }
-  },
-  mounted() {
-    this.onStatus(this.timer.status)
-  },
-  destroyed() {
-    this.$store.commit('setTimer', {id: this.id, data: {remaining: this.remaining}})
   },
   methods: {
     formatTime(t) {
@@ -60,26 +47,19 @@ export default {
       const seconds = t - hours * 3600 - minutes * 60
       return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
     },
-    tick() {
-      this.remaining -= 1
-      if (this.remaining <= 0) {
-        this.$store.commit('setTimer', {id: this.id, data: {status: 'completed'}})
-        this.playSound()
-      }
-    },
     playSound() {
       const audio = new Audio(`./media/${this.timer.sound}.mp3`)
       audio.play()
     },
     onStartStop() {
       if (this.status === 'active') {
-        this.$store.commit('setTimer', {id: this.id, data: {status: 'paused'}})
+        this.$store.commit('stopTimer', this.id)
       } else {
-        this.$store.commit('setTimer', {id: this.id, data: {status: 'active'}})
+        this.$store.commit('stopTimer', this.id)
       }
     },
     onReset() {
-      this.$store.commit('setTimer', {id: this.id, data: {status: 'ready'}})
+      this.$store.commit('resetTimer', this.id)
     },
     onEdit() {
       this.$router.push({
@@ -89,42 +69,21 @@ export default {
     },
     onRemove() {
       this.$store.commit('removeTimer', this.id)
-    },
-    onStatus(status) {
-      switch (status) {
-        case 'active':
-          if (this.intervalId) {
-            // throw new Error('Timer already started')
-          } else {
-            this.intervalId = setInterval(this.tick, 1000)
-          }
-          break
-        case 'ready':
-          this.remaining = this.timer.time
-          break
-        case 'completed':
-        case 'paused':
-          if (this.intervalId) {
-            // stop timer
-            clearInterval(this.intervalId)
-            this.intervalId = undefined
-          } else {
-            // throw new Error('Timer already stoped')
-          }
-          break
-      }
     }
   },
   computed: {
     order() { return this.$store.state.order },
     timer() { return this.$store.getters.getTimerById(this.id) },
     status() { return this.timer.status },
+    remaining() { return this.timer.remaining },
     soundName() { return sounds[this.timer.sound] },
     icon() { return faSound }
   },
   watch: {
     status(newStatus, oldStatus) {
-      this.onStatus(newStatus)
+      if (newStatus === 'completed') {
+        this.playSound()
+      }
     }
   },
   components: {

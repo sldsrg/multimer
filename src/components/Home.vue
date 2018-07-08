@@ -21,8 +21,8 @@
       :disabled="status === 'active' || status === 'ready'" >
         Reset
       </button>
-      Status: {{status}}
     </div>
+    Status: {{status}}
   </div>
 </template>
 
@@ -33,6 +33,12 @@ export default {
   components: {
     Timer
   },
+  data() {
+    return {
+      intervalId: undefined
+    }
+  },
+
   computed: {
     timers() { return this.$store.state.timers },
     status() { return this.$store.getters.getGlobalStatus },
@@ -45,6 +51,7 @@ export default {
     add() {
       this.$store.commit('addTimer', {
         time: 300,
+        remaining: 300,
         status: 'ready'
       })
     },
@@ -56,7 +63,35 @@ export default {
       }
     },
     onReset() {
-      this.$store.commit('setGlobalStatus', 'ready')
+      this.$store.commit('resetAllTimers')
+    },
+    tick() {
+      this.$store.commit('tick')
+    }
+  },
+  watch: {
+    status(newStatus, oldStatus) {
+      switch (newStatus) {
+        case 'active':
+          if (this.intervalId) {
+            throw new Error('Timer already started')
+          } else {
+            this.intervalId = setInterval(this.tick, 1000)
+          }
+          break
+        case 'ready':
+          break
+        case 'completed':
+        case 'paused':
+          if (this.intervalId) {
+            // stop timer
+            clearInterval(this.intervalId)
+            this.intervalId = undefined
+          } else {
+            // throw new Error('Timer already stoped')
+          }
+          break
+      }
     }
   }
 }

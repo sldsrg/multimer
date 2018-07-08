@@ -15,13 +15,17 @@ describe('Home.vue component', () => {
     jest.useFakeTimers()
     const state = {
       timers: [
-        {id: 't1', time: 300, sound: 'chime', status: 'ready'},
-        {id: 't2', time: 600, sound: 'whoosh', status: 'ready'}
+        {id: 't1', time: 300, remaining: 300, sound: 'chime', status: 'ready'},
+        {id: 't2', time: 600, remaining: 600, sound: 'whoosh', status: 'ready'}
       ],
       order: 'man'
     }
     const store = new Vuex.Store({ state, getters, mutations })
     wrapper = shallowMount(Home, { store, localVue })
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
   })
 
   it('contains "Add another timer" link', () => {
@@ -38,6 +42,27 @@ describe('Home.vue component', () => {
     wrapper.vm.$store.commit('setOrder', 'all')
     const ctl = wrapper.find('.globalControls')
     expect(ctl.element.style.display).toBe('')
+  })
+
+  describe('status watcher', () => {
+    it('call setInterval when global status become "active"', () => {
+      wrapper.vm.$store.commit('startTimer', 't1')
+      expect(setInterval).toBeCalled()
+    })
+
+    it('call clearInterval when global status become not "active"', () => {
+      wrapper.vm.$store.commit('startTimer', 't1')
+      expect(clearInterval).not.toBeCalled()
+      wrapper.vm.$store.commit('stopTimer', 't1')
+      expect(clearInterval).toBeCalled()
+    })
+  })
+
+  it('call tick every second when global status is active', () => {
+    wrapper.vm.tick = jest.fn()
+    wrapper.vm.$store.commit('startTimer', 't1')
+    jest.advanceTimersByTime(5000)
+    expect(wrapper.vm.tick).toHaveBeenCalledTimes(5)
   })
 
   describe('global start/stop button', () => {
@@ -101,15 +126,8 @@ describe('Home.vue component', () => {
     })
 
     it('enabled when status "paused"', () => {
-      const state = {
-        timers: [
-          {id: 't1', time: 300, sound: 'chime', status: 'paused'},
-          {id: 't2', time: 600, sound: 'whoosh', status: 'paused'}
-        ],
-        order: 'all'
-      }
-      const store = new Vuex.Store({ state, getters, mutations })
-      wrapper = shallowMount(Home, { store, localVue })
+      wrapper.vm.$store.commit('setGlobalStatus', 'active') // ready to paused don't work
+      wrapper.vm.$store.commit('setGlobalStatus', 'paused')
       expect(wrapper.vm.$store.getters.getGlobalStatus).toBe('paused')
       expect(wrapper.find('.globalReset').attributes().disabled).toBeUndefined()
     })

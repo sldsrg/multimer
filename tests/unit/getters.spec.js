@@ -68,4 +68,22 @@ describe('getters', () => {
       expect(getters.getGlobalStatus(state)).toBe('completed')
     })
   })
+
+  describe('when timers order is "man"', () => {
+    it('getGlobalStatus active if at least one timer active', () => {
+      const state = {
+        timers: [{status: 'paused'}, {status: 'active'}, {status: 'completed'}],
+        order: 'man'
+      }
+      expect(getters.getGlobalStatus(state)).toBe('active')
+    })
+
+    it('getGlobalStatus is not active if none of timers active', () => {
+      const state = {
+        timers: [{status: 'ready'}, {status: 'paused'}, {status: 'completed'}],
+        order: 'man'
+      }
+      expect(getters.getGlobalStatus(state)).not.toBe('active')
+    })
+  })
 })

@@ -8,21 +8,54 @@ export default {
     }
   },
 
+  tick({timers, order}) {
+    for (let i = 0; i < timers.length; i++) {
+      if (timers[i].status === 'active') {
+        timers[i].remaining--
+        if (timers[i].remaining <= 0) {
+          timers[i].status = 'completed'
+          if (order === 'seq') {
+            for (let j = i + 1; j < timers.length; j++) {
+              if (['ready', 'paused'].includes(timers[j].status)) {
+                timers[j].status = 'active'
+                return // in "seq" mode only one timer can by active
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
   addTimer(state, value) {
     if (!value.id) { value.id = `Timer ${state.timers.length + 1}` }
     state.timers.push(value)
   },
 
-  setTimer(state, {id, data}) {
-    state.timers = state.timers.map(t => t.id === id ? {id, ...t, ...data} : t)
-    if (state.order === 'seq' && data.status === 'completed') {
-      const current = state.timers.findIndex(t => t.id === id)
-      for (let i = current + 1; i < state.timers.length; i++) {
-        if (state.timers[i].status === 'ready') {
-          state.timers[i].status = 'active'
-          break
-        }
+  startTimer({timers}, id) {
+    const i = timers.findIndex(t => t.id === id)
+    timers[i].status = 'active'
+  },
+
+  stopTimer({timers}, id) {
+    const i = timers.findIndex(t => t.id === id)
+    timers[i].status = 'paused'
+  },
+
+  resetTimer({timers}, id) {
+    for (const timer of timers) {
+      if (timer.id === id) {
+        timer.status = 'ready'
+        timer.remaining = timer.time
+        break
       }
+    }
+  },
+
+  resetAllTimers({timers}, id) {
+    for (const timer of timers) {
+      timer.status = 'ready'
+      timer.remaining = timer.time
     }
   },
 
@@ -67,6 +100,16 @@ export default {
             break
         }
       }
+    }
+  },
+
+  setupTimer({timers}, {id, data}) {
+    const i = timers.findIndex(t => t.id === id)
+    timers[i] = {...timers[i], ...data}
+    if (timers[i].remaining > timers[i].time) {
+      timers[i].remaining = timers[i].time
+    } else if (timers[i].status === 'ready') {
+      timers[i].remaining = timers[i].time
     }
   }
 }

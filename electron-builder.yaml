@@ -1,6 +1,9 @@
 directories:
   output: dist
   buildResources: assets
+win:
+  target: msi
+  icon: build/clock.png
 files:
   - build/**/*
   - index.js

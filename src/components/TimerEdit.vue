@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     testSound() {
-      const test = new Audio(`./media/${this.sound}.mp3`)
+      const test = new Audio(`./media/${this.timer.sound}.mp3`)
       test.play()
     },
     save() {

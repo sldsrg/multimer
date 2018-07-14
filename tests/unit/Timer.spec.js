@@ -76,6 +76,11 @@ describe('Timer.vue component', () => {
         expect(wrapper.find('.startStop').text()).toBe('Start')
       })
 
+      it('display "Start" in "paused" state', () => {
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_paused'} })
+        expect(wrapper.find('.startStop').text()).toBe('Start')
+      })
+
       it('display "Stop" in "active" state', () => {
         const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_active'} })
         expect(wrapper.find('.startStop').text()).toBe('Stop')
@@ -86,6 +91,20 @@ describe('Timer.vue component', () => {
         const button = wrapper.find('.startStop')
         button.trigger('click')
         expect(wrapper.vm.status).toBe('paused')
+      })
+
+      it('set status to "active" when clicked in "ready" state', () => {
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_ready'} })
+        const button = wrapper.find('.startStop')
+        button.trigger('click')
+        expect(wrapper.vm.status).toBe('active')
+      })
+
+      it('set status to "active" when clicked in "paused" state', () => {
+        const wrapper = shallowMount(Timer, { store, localVue, propsData: {id: 't_paused'} })
+        const button = wrapper.find('.startStop')
+        button.trigger('click')
+        expect(wrapper.vm.status).toBe('active')
       })
 
       it('disabled when staus "completed"', () => {

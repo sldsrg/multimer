@@ -55,7 +55,7 @@ export default {
       if (this.status === 'active') {
         this.$store.commit('stopTimer', this.id)
       } else {
-        this.$store.commit('stopTimer', this.id)
+        this.$store.commit('startTimer', this.id)
       }
     },
     onReset() {

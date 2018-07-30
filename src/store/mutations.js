@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export default {
 
   fromLocalStorage(state, value) {
@@ -105,11 +107,12 @@ export default {
 
   setupTimer({timers}, {id, data}) {
     const i = timers.findIndex(t => t.id === id)
-    timers[i] = {...timers[i], ...data}
-    if (timers[i].remaining > timers[i].time) {
-      timers[i].remaining = timers[i].time
-    } else if (timers[i].status === 'ready') {
-      timers[i].remaining = timers[i].time
+    const timer = {...timers[i], ...data}
+    if (timer.remaining > timer.time) {
+      timer.remaining = timer.time
+    } else if (timer.status === 'ready') {
+      timer.remaining = timer.time
     }
+    Vue.set(timers, i, timer)
   }
 }

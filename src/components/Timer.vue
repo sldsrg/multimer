@@ -29,7 +29,7 @@
 
 <script>
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-import faSound from '@fortawesome/fontawesome-free-solid/faVolumeUp'
+import faSound from '@fortawesome/free-solid-svg-icons/faVolumeUp'
 import sounds from '../assets/sounds'
 
 export default {

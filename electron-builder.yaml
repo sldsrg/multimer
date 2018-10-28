@@ -8,4 +8,4 @@ files:
   - build/**/*
   - index.js
 appId: com.example.timer
-electronVersion: 2.0.2
+electronVersion: 2.0.8

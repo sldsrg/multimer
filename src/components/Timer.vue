@@ -21,9 +21,7 @@
       <a href="#" @click.prevent="onRemove">remove</a>
       Status: {{status}}
     </div>
-    <div class="progress">
-      <progress :value="remaining" :max="timer.time"/>
-    </div>
+    <progress :value="remaining" :max="timer.time" :class="{active: isActive}"/>
   </div>
 </template>
 
@@ -77,7 +75,8 @@ export default {
     status() { return this.timer.status },
     remaining() { return this.timer.remaining },
     soundName() { return sounds[this.timer.sound] },
-    icon() { return faSound }
+    icon() { return faSound },
+    isActive() { return this.status === 'active' }
   },
   watch: {
     status(newStatus, oldStatus) {
@@ -97,19 +96,36 @@ export default {
   font-size: 3rem;
 }
 
-.progress {
+progress {
   margin-top: 5px;
   margin-bottom: 30px;
   width: 100%;
+  height: 40px;
+}
+
+progress[value] {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+progress[value]::-webkit-progress-value {
+  background-color: green;
+  border-radius: 5px; 
+}
+
+.active[value]::-webkit-progress-value {
+  background-color: red;
 }
 
 a, span {
   margin: 12px;
-}
-
-progress {
-  width: 100%;
-  height: 40px;
 }
 
 button {

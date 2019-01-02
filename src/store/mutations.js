@@ -7,10 +7,14 @@ export default {
     if (data) {
       const store = JSON.parse(data)
       Object.assign(state, store)
+      for (let t of state.timers) {
+        // pause all timers with saved status 'active'
+        if (t.status === 'active') { t.status = 'paused' }
+      }
     }
   },
 
-  tick({timers, order}) {
+  tick({ timers, order }) {
     for (let i = 0; i < timers.length; i++) {
       if (timers[i].status === 'active') {
         timers[i].remaining--
@@ -34,17 +38,17 @@ export default {
     state.timers.push(value)
   },
 
-  startTimer({timers}, id) {
+  startTimer({ timers }, id) {
     const i = timers.findIndex(t => t.id === id)
     timers[i].status = 'active'
   },
 
-  stopTimer({timers}, id) {
+  stopTimer({ timers }, id) {
     const i = timers.findIndex(t => t.id === id)
     timers[i].status = 'paused'
   },
 
-  resetTimer({timers}, id) {
+  resetTimer({ timers }, id) {
     for (const timer of timers) {
       if (timer.id === id) {
         timer.status = 'ready'
@@ -54,7 +58,7 @@ export default {
     }
   },
 
-  resetAllTimers({timers}, id) {
+  resetAllTimers({ timers }, id) {
     for (const timer of timers) {
       timer.status = 'ready'
       timer.remaining = timer.time
@@ -74,9 +78,9 @@ export default {
       state.timers = state.timers.map(t => {
         switch (value) {
           case 'completed':
-          case 'ready': return Object.assign(t, {status: value})
-          case 'paused': return t.status === 'active' ? Object.assign(t, {status: value}) : t
-          case 'active': return t.status === 'completed' ? t : Object.assign(t, {status: value})
+          case 'ready': return Object.assign(t, { status: value })
+          case 'paused': return t.status === 'active' ? Object.assign(t, { status: value }) : t
+          case 'active': return t.status === 'completed' ? t : Object.assign(t, { status: value })
           default: return t
         }
       })
@@ -105,9 +109,9 @@ export default {
     }
   },
 
-  setupTimer({timers}, {id, data}) {
+  setupTimer({ timers }, { id, data }) {
     const i = timers.findIndex(t => t.id === id)
-    const timer = {...timers[i], ...data}
+    const timer = { ...timers[i], ...data }
     if (timer.remaining > timer.time) {
       timer.remaining = timer.time
     } else if (timer.status === 'ready') {

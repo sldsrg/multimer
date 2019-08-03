@@ -1,6 +1,6 @@
 {
   "name": "mixtimer",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": {
     "email": "soloss@yandex.ru",
     "name": "Sergey Solodukhin"
@@ -15,8 +15,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
-    "preelectron-pack": "yarn build",
-    "electron-pack": "build"
+    "predist": "yarn build",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
@@ -24,22 +24,22 @@
     "@fortawesome/free-solid-svg-icons": "^5.3.1",
     "@fortawesome/vue-fontawesome": "^0.1.1",
     "electron-window-state": "^5.0.3",
-    "vue": "~2.5.17",
+    "vue": "~2.6.10",
     "vue-router": "~3.0.1",
-    "vuex": "~3.0.1"
+    "vuex": "~3.1.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~3.0.1",
-    "@vue/cli-plugin-eslint": "~3.0.1",
-    "@vue/cli-plugin-unit-jest": "~3.0.1",
-    "@vue/cli-service": "~3.0.1",
-    "@vue/eslint-config-standard": "~3.0.1",
+    "@vue/cli-plugin-babel": "~3.9.2",
+    "@vue/cli-plugin-eslint": "~3.9.2",
+    "@vue/cli-plugin-unit-jest": "~3.9.0",
+    "@vue/cli-service": "~3.9.3",
+    "@vue/eslint-config-standard": "~4.0.0",
     "@vue/test-utils": "~1.0.0-beta.24",
     "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "~23.4.2",
-    "electron": "2.0.8",
-    "electron-builder": "~20.28.3",
-    "vue-template-compiler": "~2.5.17"
+    "babel-jest": "~24.8.0",
+    "electron": "~6.0.0",
+    "electron-builder": "~21.2.0",
+    "vue-template-compiler": "~2.6.10"
   },
   "browserslist": [
     "> 1%",
